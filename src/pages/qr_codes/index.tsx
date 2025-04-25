@@ -1,5 +1,6 @@
 import { Button, Flex, Form, message, Modal } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { hostName } from 'src/app/services/api/const';
@@ -57,6 +58,8 @@ function QRCodes() {
       title: 'Fayli',
       dataIndex: '_id',
       key: '_id',
+      align: 'center',
+      width: 120,
       render: (val) => (
         <a href={`${hostName}/admin/qr-codes/${val}/download`} download>
           Yuklab olish
@@ -163,17 +166,27 @@ export const baseColumns: ColumnsType<IQRRes> = [
     key: 'code',
   },
   {
-    title: 'Eskirish vaqti',
+    title: 'Boshlanish vaqti',
+    dataIndex: 'startTime',
+    key: 'startTime',
+    width: 180,
+    align: 'center',
+    render: (val) => dayjs(val).format('DD-MM-YYYY HH:mm:ss'),
+  },
+  {
+    title: 'Tugash vaqti',
     dataIndex: 'validUntil',
     key: 'validUntil',
-    width: 140,
-    render: (val) => (val ? new Date(val).toLocaleDateString('uz-UZ') : ''),
+    width: 180,
+    align: 'center',
+    render: (val) => dayjs(val).format('DD-MM-YYYY HH:mm:ss'),
   },
   {
     title: 'Holati',
     dataIndex: 'isActive',
     key: 'isActive',
     width: 100,
+    align: 'center',
     render: (val) => (
       <p style={{ color: val ? colors.blue : colors.red }}>
         {val ? 'Aktiv' : 'Aktiv emas'}
