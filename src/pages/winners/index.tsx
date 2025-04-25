@@ -39,7 +39,7 @@ function Winners() {
 
   return (
     <TableContent
-      title="QR-kodlar"
+      title="G'oliblar"
       total={allData?.pagination?.total}
       dataSource={data}
       columns={columns}

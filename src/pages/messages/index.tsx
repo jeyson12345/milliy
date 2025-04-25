@@ -10,7 +10,7 @@ import { colors } from 'src/constants/theme';
 import useParamsHook from 'src/hooks/params';
 import { AddMessage } from './components/AddMessage';
 
-function QRCodes() {
+function Messages() {
   // Methods
   const { pathname } = useLocation();
   const [get, { data: allData, isLoading }] = useGetMessagesMutation();
@@ -47,7 +47,7 @@ function QRCodes() {
     <>
       {/* // Table */}
       <TableContent
-        title="QR-kodlar"
+        title="Xabarlar"
         total={allData?.pagination?.total}
         dataSource={data}
         columns={columns}
@@ -65,12 +65,12 @@ function QRCodes() {
       />
 
       {/* // Modals */}
-      <AddMessage open={open} setOpen={setOpen} callBack={handleGet} />
+      <AddMessage open={open} setOpen={setOpen} callBack={handleGet} allUsers />
     </>
   );
 }
 
-export default QRCodes;
+export default Messages;
 
 export const columns: ColumnsType<IMessageRes> = [
   {

@@ -28,7 +28,7 @@ function TableActions({
   return (
     <>
       <div className="table_action">
-        {!onView && (
+        {onView && (
           <Tooltip title="Ko'rish">
             <Button className="table_action-btn-blue" onClick={onView}>
               <Eye size="16" />
@@ -36,7 +36,7 @@ function TableActions({
           </Tooltip>
         )}
 
-        {!onMessage && (
+        {onMessage && (
           <Tooltip title="Xabar yuborish">
             <Button className="table_action-btn-yellow" onClick={onMessage}>
               <MessageText1 size="16" />

@@ -114,6 +114,7 @@ export interface AgeGroups {
   teenagers: number;
   unknown: number;
   middle_aged: number;
+  seniors: number;
 }
 
 export interface DailyStat {

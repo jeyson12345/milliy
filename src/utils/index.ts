@@ -56,3 +56,20 @@ export const prettierPhone = (val: string) => {
     11
   )}-${val.slice(11, 13)}`;
 };
+
+export const names = {
+  male: 'Erkaklar',
+  female: 'Ayollar',
+  unknown: 'Boshqalar',
+  adults: 'Yoshlar',
+  teenagers: `O'smirlar`,
+  middle_aged: `O'rta yosh`,
+  young_adults: `Bolalar`,
+  seniors: `Keksalar`,
+
+  totalUsers: 'Umumiy foydalanuvchilar',
+  newUsers: 'Yangi foydalanuvchilar',
+  totalScanners: 'Umumiy skanerlar',
+  todayScanners: 'Bugun skanerlar',
+  activeUsers: 'Faol foydalanuvchilar',
+};

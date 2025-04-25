@@ -10,6 +10,7 @@ interface IAddMessageProps {
   userId?: string;
   setOpen: (open: boolean) => void;
   callBack?: () => void;
+  allUsers?: boolean;
 }
 
 export const AddMessage = ({
@@ -17,6 +18,7 @@ export const AddMessage = ({
   open,
   setOpen,
   callBack,
+  allUsers = false,
 }: IAddMessageProps) => {
   const [form] = Form.useForm();
 
@@ -32,6 +34,10 @@ export const AddMessage = ({
           message.success('Muvofaqqiyatli yuborildi');
         });
     } else {
+      message.info('User id mavjud emas !');
+    }
+
+    if (allUsers) {
       await sendAll(val)
         .unwrap()
         .then(() => {

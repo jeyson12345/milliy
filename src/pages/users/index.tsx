@@ -15,6 +15,7 @@ import FilterRangePicker from 'src/components/filter/range_picker';
 import FilterRegion from 'src/components/filter/region';
 import { colors } from 'src/constants/theme';
 import useParamsHook from 'src/hooks/params';
+import { AddMessage } from '../messages/components/AddMessage';
 
 function Users({ isTopUser }: { isTopUser?: boolean }) {
   // Methods
@@ -23,6 +24,8 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
   const [getTopUsers, { data: topUsers, isLoading: topUsersLoading }] =
     useGetTopUsersMutation();
   const [data, setData] = useState<IUser[]>();
+  const [open, setOpen] = useState(false);
+  const [userId, setUserId] = useState('');
 
   // Search params
   const { searchParams, params } = useParamsHook();
@@ -99,26 +102,43 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
           onBlock={() => blockUser(id)}
           blockLoading={originalArgs === id && blockLoading}
           isBlocked={el.isBlocked}
+          onMessage={() => {
+            setOpen(true);
+            setUserId(id);
+          }}
         />
       ),
     },
   ];
 
   return (
-    <TableContent
-      title="Foydalanuvchilar"
-      total={isTopUser ? topUsers?.pagination?.total : users?.pagination?.total}
-      dataSource={data}
-      columns={columns}
-      loading={isTopUser ? topUsersLoading : usersLoading}
-      filters={
-        <>
-          <FilterRegion />
-          <FilterDistrict />
-          <FilterRangePicker />
-        </>
-      }
-    />
+    <>
+      <TableContent
+        title={isTopUser ? 'Top foydalanuvchilar' : 'Foydalanuvchilar'}
+        total={
+          isTopUser ? topUsers?.pagination?.total : users?.pagination?.total
+        }
+        dataSource={data}
+        columns={columns}
+        loading={isTopUser ? topUsersLoading : usersLoading}
+        filters={
+          <>
+            <FilterRegion />
+            <FilterDistrict />
+            <FilterRangePicker />
+          </>
+        }
+      />
+
+      <AddMessage
+        open={open}
+        setOpen={(val) => {
+          setOpen(val);
+          setUserId('');
+        }}
+        userId={userId}
+      />
+    </>
   );
 }
 
