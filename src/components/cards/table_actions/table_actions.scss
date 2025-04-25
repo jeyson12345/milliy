@@ -1,0 +1,56 @@
+@import 'src/styles/variables.scss';
+
+$color-yellow: #ffbe05;
+$color-red: #f44e43;
+$color-white: #fff;
+$color-blue: #007bff;
+
+.table_action {
+  @include flex;
+  width: 70px;
+  justify-content: center;
+  column-gap: 2px;
+
+  &-btn {
+    &-yellow,
+    &-red,
+    &-blue {
+      @include flex-center;
+      flex-shrink: 0;
+      box-shadow: none;
+      border-radius: 4px;
+      border: none;
+      width: 24px;
+      height: 24px;
+      padding: 0 !important;
+      background-color: transparent;
+    }
+
+    &-yellow {
+      color: $color-yellow;
+
+      &:hover {
+        background-color: $color-yellow !important;
+        color: $color-white !important;
+      }
+    }
+
+    &-red {
+      color: $color-red;
+
+      &:hover {
+        background-color: $color-red !important;
+        color: $color-white !important;
+      }
+    }
+
+    &-blue {
+      color: $color-blue;
+
+      &:hover {
+        background-color: $color-blue !important;
+        color: $color-white !important;
+      }
+    }
+  }
+}

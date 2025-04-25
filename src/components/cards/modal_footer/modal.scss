@@ -1,0 +1,40 @@
+@import 'src/styles/variables.scss';
+
+$shadow-card: 0 3px 3px rgba(56, 65, 74, 0.1);
+$color-black: #495057;
+$color-green: #45cb85;
+$color-green-hover: #3ab375;
+$color-grey-hover: #ced4da;
+$color-content-quaternary: #f3f6f9;
+
+.modal {
+  &-footer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    column-gap: 16px;
+    padding-top: 20px;
+  }
+
+  &-add-btn,
+  &-cancel-btn {
+    border: none;
+    box-shadow: $shadow-card;
+    font-size: 16px;
+    height: 40px;
+  }
+  &-add-btn {
+    background-color: $color-green;
+    &:hover {
+      background-color: $color-green-hover !important;
+    }
+  }
+  &-cancel-btn {
+    background-color: $color-content-quaternary;
+    &:hover {
+      background-color: $color-grey-hover !important;
+      color: $color-black !important;
+    }
+  }
+}

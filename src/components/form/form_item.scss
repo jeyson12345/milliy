@@ -1,0 +1,16 @@
+@import 'src/styles/variables.scss';
+
+.form-item {
+  &-input {
+    &-mask {
+      .ant-input-group-addon {
+        border: none;
+      }
+      .ant-input {
+        &::placeholder {
+          color: $white;
+        }
+      }
+    }
+  }
+}

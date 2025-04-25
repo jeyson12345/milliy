@@ -1,0 +1,124 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+// Font family
+$font-primary: 'Noto Sans', sans-serif;
+
+// Colors
+$primary: #e29438;
+$bg-primary: #3b0925;
+$bg-secodary: #5d0e3b;
+$bg-secodary-hover: #801752;
+$text-primary: #333;
+$text-secondary: #666;
+$text-menu: #20292f;
+$text-menu-hover: #71818c;
+$stroke: #0000001f;
+$white: #fff;
+
+$light-gray: #e9e9e9;
+$black: #000;
+$black-01: #666;
+$black-02: #767676;
+$black-03: #313131;
+$orange: #df7c6c;
+$shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.11);
+$transition: all 0.3s ease-in-out;
+
+// Shadow styles
+@mixin shadow {
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: $shadow;
+  }
+}
+// Flex styles
+@mixin flex {
+  display: flex;
+  align-items: center;
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin line-clamp1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+@mixin line-clamp2 {
+  @include line-clamp1;
+  -webkit-line-clamp: 2;
+}
+
+.flex-center {
+  @include flex-center;
+}
+.line-clamp1 {
+  @include line-clamp1;
+}
+
+//Scroll
+@mixin scroll {
+  overflow-y: auto;
+
+  /* width */
+  &::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 20px;
+    direction: ltr;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #f2f2f7;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #878a99;
+    border-radius: 100px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #878a99;
+  }
+}
+
+@mixin scroll_10 {
+  @include scroll();
+  /* width */
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+}
+
+@mixin scroll-x {
+  @include scroll();
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+}
+
+@mixin scroll-none {
+  overflow-y: auto;
+  /* width */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

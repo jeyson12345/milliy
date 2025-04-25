@@ -1,0 +1,20 @@
+@import './variables.scss';
+
+.ant-btn {
+  @include flex-center;
+}
+
+.ant-popconfirm-buttons {
+  .ant-btn {
+    display: inline-block;
+  }
+}
+.ant-table {
+  &-body {
+    &::-webkit-scrollbar {
+      width: 5px !important;
+      border-radius: 20px;
+      direction: ltr;
+    }
+  }
+}

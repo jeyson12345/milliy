@@ -1,0 +1,16 @@
+@import 'src/styles/variables';
+
+.container {
+  display: flex;
+  column-gap: 24px;
+}
+
+.left {
+  width: calc(100% - 244px);
+}
+
+.right {
+  width: 220px;
+  flex-shrink: 0;
+}
+
