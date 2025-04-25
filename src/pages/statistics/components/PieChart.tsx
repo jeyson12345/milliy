@@ -24,7 +24,6 @@ export const PieChart = ({ data }: { data: any }) => {
     series: [
       {
         data: list,
-        name: 'Access From',
         type: 'pie',
         radius: ['40%', '80%'],
         avoidLabelOverlap: false,
@@ -87,6 +86,7 @@ export const BarChart = ({ data }: { data: DailyStat[] | undefined }) => {
     },
     series: [
       {
+        name: 'Soni: ',
         data: list,
         type: 'bar',
         smooth: true,

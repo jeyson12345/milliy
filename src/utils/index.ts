@@ -70,6 +70,6 @@ export const names = {
   totalUsers: 'Umumiy foydalanuvchilar',
   newUsers: 'Yangi foydalanuvchilar',
   totalScanners: 'Umumiy skanerlar',
-  todayScanners: 'Bugun skanerlar',
+  todayScanners: 'Bugungi skanerlar',
   activeUsers: 'Faol foydalanuvchilar',
 };

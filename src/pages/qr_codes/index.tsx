@@ -24,7 +24,7 @@ function QRCodes() {
 
   // Download QR code
   const [download, { data: image }] = useDownloadQrCodeMutation();
-  console.log('image', image);
+  // console.log('image', image);
 
   // Search params
   const { searchParams, params } = useParamsHook();

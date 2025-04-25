@@ -16,6 +16,7 @@ import FilterRegion from 'src/components/filter/region';
 import { colors } from 'src/constants/theme';
 import useParamsHook from 'src/hooks/params';
 import { AddMessage } from '../messages/components/AddMessage';
+import { UserInfo } from './components/UserInfo';
 
 function Users({ isTopUser }: { isTopUser?: boolean }) {
   // Methods
@@ -25,7 +26,8 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
     useGetTopUsersMutation();
   const [data, setData] = useState<IUser[]>();
   const [open, setOpen] = useState(false);
-  const [userId, setUserId] = useState('');
+  const [user, setUser] = useState<IUser | null>();
+  const [openInfo, setOpenInfo] = useState(false);
 
   // Search params
   const { searchParams, params } = useParamsHook();
@@ -70,7 +72,7 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
   //Block user
   const [block, { originalArgs, isLoading: blockLoading }] =
     useBlockUserMutation();
-  console.log('originalArgs', originalArgs);
+  // console.log('originalArgs', originalArgs);
 
   const blockUser = (id: IBaseId) => {
     block(id)
@@ -104,7 +106,11 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
           isBlocked={el.isBlocked}
           onMessage={() => {
             setOpen(true);
-            setUserId(id);
+            setUser(el);
+          }}
+          onView={() => {
+            setUser(el);
+            setOpenInfo(true);
           }}
         />
       ),
@@ -134,9 +140,15 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
         open={open}
         setOpen={(val) => {
           setOpen(val);
-          setUserId('');
+          setUser(null);
         }}
-        userId={userId}
+        userId={user?._id}
+      />
+
+      <UserInfo
+        open={openInfo}
+        data={user || undefined}
+        onClose={() => setOpenInfo(false)}
       />
     </>
   );

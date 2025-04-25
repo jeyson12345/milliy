@@ -18,8 +18,10 @@ export interface IUser extends IBaseRes<object> {
   telegramId: string;
   region: string;
   city: string;
+  birthdate: string;
   isBlocked: boolean;
   age: number;
+  sex: string;
   balance: number;
   childrenCount: number;
   referralsCount: number;
