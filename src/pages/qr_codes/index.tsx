@@ -2,6 +2,7 @@ import { Button, Flex, Form, message, Modal } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { hostName } from 'src/app/services/api/const';
 import {
   useDownloadQrCodeMutation,
   useGenerateQRMutation,
@@ -57,10 +58,7 @@ function QRCodes() {
       dataIndex: '_id',
       key: '_id',
       render: (val) => (
-        <a
-          href={`http://137.184.119.32:3000/admin/qr-codes/${val}/download`}
-          download
-        >
+        <a href={`${hostName}/admin/qr-codes/${val}/download`} download>
           Yuklab olish
         </a>
       ),
