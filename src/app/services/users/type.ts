@@ -25,6 +25,7 @@ export interface IUser extends IBaseRes<object> {
   balance: number;
   childrenCount: number;
   referralsCount: number;
+  scanCount: number;
 }
 
 export interface IBlockRes {

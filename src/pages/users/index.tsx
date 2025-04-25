@@ -168,12 +168,12 @@ export const baseColumns: ColumnsType<IUser> = [
     title: 'F.I.Sh.',
     dataIndex: 'firstName',
     key: 'firstName',
-    width: 180,
+    // width: 180,
     render: (_, el) =>
       (el.firstName || '') +
       ' ' +
       (el.surname || '') +
-      '' +
+      ' ' +
       (el.secondName || ''),
   },
   {
@@ -181,6 +181,7 @@ export const baseColumns: ColumnsType<IUser> = [
     dataIndex: 'sex',
     key: 'sex',
     width: 60,
+    align: 'center',
     render: (val) => (val === 'male' ? 'Erkak' : 'Ayol'),
   },
   {
@@ -188,6 +189,7 @@ export const baseColumns: ColumnsType<IUser> = [
     dataIndex: 'age',
     key: 'age',
     width: 60,
+    align: 'center',
   },
   {
     title: 'Viloyat',
@@ -204,6 +206,9 @@ export const baseColumns: ColumnsType<IUser> = [
     dataIndex: 'balance',
     key: 'balance',
     width: 120,
+    align: 'center',
+    render: (_, record) =>
+      Number(record?.referralsCount || 0) + Number(record?.scanCount || 0),
     sorter: (a, b) => a.balance - b.balance,
   },
   {
@@ -211,6 +216,7 @@ export const baseColumns: ColumnsType<IUser> = [
     dataIndex: 'createdAt',
     key: 'createdAt',
     width: 100,
+
     render: (val) => (val ? new Date(val).toLocaleDateString('uz-UZ') : ''),
   },
   {
@@ -218,6 +224,7 @@ export const baseColumns: ColumnsType<IUser> = [
     dataIndex: 'isBlocked',
     key: 'isBlocked',
     width: 100,
+    align: 'center',
     render: (val) => (
       <p style={{ color: val ? colors.red : colors.blue }}>
         {val ? 'Bloklangan' : 'Faol'}
