@@ -53,7 +53,9 @@ export const AddMessage = ({
     <Modal
       open={open}
       footer={null}
-      title="Barchaga xabar yuborish"
+      title={
+        allUsers ? 'Barchaga xabar yuborish' : 'Foydalanuvchiga xabar yuborish'
+      }
       onCancel={() => {
         setOpen(false);
         form.resetFields();
