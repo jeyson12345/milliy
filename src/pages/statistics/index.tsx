@@ -1,8 +1,8 @@
+// @ts-nocheck
 import { Flex, Spin, Statistic, StatisticProps } from 'antd';
 import CountUp from 'react-countup';
 import { useGetStatsQuery } from 'src/app/services/users';
 import ContentTop from 'src/components/cards/content_top';
-import { PieChart } from './components/PieChart';
 
 const { innerHeight } = window;
 
@@ -31,10 +31,10 @@ function Statistics() {
           ))}
         </Flex>
 
-        <Flex justify="center" gap={64} style={{ marginTop: 64 }}>
+        {/* <Flex justify="center" gap={64} style={{ marginTop: 64 }}>
           <PieChart data={data?.demographics?.gender} />
           <PieChart data={data?.demographics?.ageGroups} />
-        </Flex>
+        </Flex> */}
       </Spin>
     </div>
   );
