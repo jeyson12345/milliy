@@ -99,7 +99,7 @@ export const BarChart = ({ data }: { data: DailyStat[] | undefined }) => {
 
   useEffect(() => {
     if (data) {
-      setList(data?.map((item) => item.count * 20000) || []);
+      setList(data?.map((item) => item.count) || []);
       setNames(data?.map((item) => item._id) || []);
     }
   }, [data]);
