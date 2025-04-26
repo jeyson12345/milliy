@@ -76,7 +76,7 @@ export const BarChart = ({ data }: { data: DailyStat[] | undefined }) => {
   const [names, setNames] = useState<string[]>([]);
 
   const options = {
-    grid: { top: 20, right: 40, bottom: 20, left: 40 },
+    grid: { top: 20, right: 40, bottom: 20, left: 60 },
     xAxis: {
       type: 'category',
       data: names,
@@ -99,7 +99,7 @@ export const BarChart = ({ data }: { data: DailyStat[] | undefined }) => {
 
   useEffect(() => {
     if (data) {
-      setList(data?.map((item) => item.count) || []);
+      setList(data?.map((item) => item.count * 20000) || []);
       setNames(data?.map((item) => item._id) || []);
     }
   }, [data]);
@@ -107,7 +107,7 @@ export const BarChart = ({ data }: { data: DailyStat[] | undefined }) => {
   return (
     <ReactEcharts
       option={options}
-      style={{ width: '600px', height: '300px' }}
+      style={{ width: '95%', height: '300px' }}
     ></ReactEcharts>
   );
 };

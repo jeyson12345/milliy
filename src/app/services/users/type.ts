@@ -50,8 +50,9 @@ export interface IWinnersRes extends IBaseRes<object> {
   _id: string;
   startedAt: string;
   endedAt: string;
-  winner: IRecipient;
-  winnerBalance: number;
+  wonAt: string;
+  winType: string;
+  userId: IUser;
 }
 
 // Scan types

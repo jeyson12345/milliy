@@ -1,4 +1,5 @@
 import { ColumnsType } from 'antd/es/table';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useGetWinnersMutation } from 'src/app/services/users';
@@ -57,22 +58,37 @@ export const columns: ColumnsType<IWinnersRes> = [
     key: 'key',
     fixed: 'left',
     width: 50,
+    align: 'center',
   },
   {
     title: 'Ism, familya',
     key: 'name',
-    render: (_, record) =>
-      record?.winner?.firstName + ' ' + record?.winner?.surname,
+    render: (_, { userId }) =>
+      `${userId?.firstName} ${userId?.secondName} ${userId?.surname}`,
   },
   {
-    title: 'Balans',
+    title: 'Jami bali',
     key: 'balans',
-    render: (_, record) => record?.winnerBalance,
+    render: (_, { userId }) =>
+      userId?.referralsCount || 0 + userId?.scanCount || 0,
   },
   {
-    title: 'Sana',
-    key: 'date',
+    title: 'Yutuq turi',
+    key: 'type',
+    align: 'center',
+    width: 120,
     render: (_, record) =>
-      new Date(record?.startedAt).toLocaleDateString('uz-UZ'),
+      record?.winType == 'daily'
+        ? 'Kunlik'
+        : record?.winType == 'weekly'
+        ? 'Haftalik'
+        : 'Oylik',
+  },
+  {
+    title: 'Yutgan sana',
+    key: 'date',
+    width: 200,
+    align: 'center',
+    render: (_, record) => dayjs(record?.wonAt).format('DD-MM-YYYY HH:mm:ss'),
   },
 ];

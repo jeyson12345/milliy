@@ -60,7 +60,7 @@ export const prettierPhone = (val: string) => {
 export const names = {
   male: 'Erkaklar',
   female: 'Ayollar',
-  unknown: 'Boshqalar',
+  unknown: 'Tanlanmagan',
   adults: 'Yoshlar',
   teenagers: `O'smirlar`,
   middle_aged: `O'rta yosh`,

@@ -1,4 +1,5 @@
 import { ColumnsType } from 'antd/es/table';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useGetScansMutation } from 'src/app/services/users';
@@ -93,7 +94,6 @@ export const columns: ColumnsType<IScanRes> = [
     title: 'Skanerlash vaqti',
     dataIndex: 'scannedAt',
     key: 'scannedAt',
-    width: 140,
-    render: (val) => (val ? new Date(val).toLocaleDateString('uz-UZ') : ''),
+    render: (val) => dayjs(val).format('DD-MM-YYYY HH:mm:ss'),
   },
 ];
