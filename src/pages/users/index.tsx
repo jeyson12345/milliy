@@ -17,6 +17,7 @@ import { colors } from 'src/constants/theme';
 import useParamsHook from 'src/hooks/params';
 import { AddMessage } from '../messages/components/AddMessage';
 import { UserInfo } from './components/UserInfo';
+import { Button } from 'antd';
 
 function Users({ isTopUser }: { isTopUser?: boolean }) {
   // Methods
@@ -127,6 +128,11 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
         dataSource={data}
         columns={columns}
         loading={isTopUser ? topUsersLoading : usersLoading}
+        headerExtra={
+          <Button size="large" type="primary">
+            Yuklash
+          </Button>
+        }
         filters={
           <>
             <FilterRegion />
@@ -182,7 +188,8 @@ export const baseColumns: ColumnsType<IUser> = [
     key: 'sex',
     width: 60,
     align: 'center',
-    render: (val) => (val === 'male' ? 'Erkak' : 'Ayol'),
+    render: (val) =>
+      val === 'male' ? 'Erkak' : val === 'female' ? 'Ayol' : '',
   },
   {
     title: 'Yosh',

@@ -1,17 +1,17 @@
 import { Segmented } from 'antd';
 import Lottie from 'lottie-react';
+import { useState } from 'react';
 import CountUp from 'react-countup';
-import loadingAnimation from 'src/assets/lottie/loading.json';
-import ContentTop from 'src/components/cards/content_top';
-import s from './style.module.scss';
 import {
   useSelectDailyWinnerMutation,
   useSelectMonthlyWinnerMutation,
   useSelectWeeklyWinnerMutation,
 } from 'src/app/services/users';
-import { useState } from 'react';
 import { IUser } from 'src/app/services/users/type';
+import loadingAnimation from 'src/assets/lottie/loading.json';
+import ContentTop from 'src/components/cards/content_top';
 import ConfettiEffect from './confetti';
+import s from './style.module.scss';
 
 const MyCounter = ({
   number,
@@ -94,17 +94,17 @@ const DetermineWinnerPage = () => {
               <MyCounter number={9} delay={3.5} start={895} />
               <MyCounter number={8} delay={4} start={456} />
               &nbsp; (
-              <MyCounter
+              {/* <MyCounter
                 number={+winner?.phoneNumber?.slice(4, 5)}
                 delay={4.5}
                 start={102}
-              />
-              <MyCounter
+              /> */}
+              {/* <MyCounter
                 number={+winner?.phoneNumber?.slice(5, 6)}
                 delay={4.5}
                 start={102}
-              />
-              ) &nbsp;
+              /> */}
+              **) &nbsp;
               <MyCounter
                 number={+winner?.phoneNumber?.slice(6, 7)}
                 delay={5}

@@ -31,7 +31,7 @@ function AntConfigProvider({ children }: ProviderProps) {
             rowHoverBg: '#F5F5F5',
           },
           Button: {
-            controlHeight: 56,
+            // controlHeight: 56,
             paddingContentHorizontal: 30,
             // colorBorder: ,
             // colorBgTextActive: colors.white,

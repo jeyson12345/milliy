@@ -13,19 +13,24 @@ export const UserInfo = ({ open = true, onClose, data }: IProps) => {
     {
       label: 'F.I.Sh.',
       key: 'firstName',
-      children: `${data?.firstName} ${data?.secondName} ${data?.surname}`,
+      children: `${data?.firstName || ''} ${data?.secondName || ''} ${
+        data?.surname || ''
+      }`,
       span: 3,
     },
     {
       label: 'Jinsi',
       key: 'sex',
-      children: data?.sex === 'male' ? 'Erkak' : 'Ayni',
+      children:
+        data?.sex === 'male' ? 'Erkak' : data?.sex === 'female' ? 'Ayol' : '',
       span: 3,
     },
     {
       label: `Tug'ilgan sanasi`,
       key: 'birthdate',
-      children: new Date(String(data?.birthdate)).toLocaleDateString('uz-UZ'),
+      children: data?.birthdate
+        ? new Date(String(data?.birthdate)).toLocaleDateString('uz-UZ')
+        : '',
       span: 3,
     },
     {

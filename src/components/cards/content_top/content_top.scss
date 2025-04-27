@@ -14,4 +14,10 @@
     line-height: 21.09px;
     letter-spacing: 0%;
   }
+
+  &-children {
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+  }
 }

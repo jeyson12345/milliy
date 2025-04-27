@@ -33,6 +33,12 @@ export const authApi = api.injectEndpoints({
         url: `/admin/users?` + params,
       }),
     }),
+    //Get user endpoint
+    getUsersDownload: build.mutation<string, string>({
+      query: (params) => ({
+        url: `/admin/users/download?` + params,
+      }),
+    }),
     //Get top user endpoint
     getTopUsers: build.mutation<IBaseDataRes<IUser>, string>({
       query: (params) => ({
