@@ -90,10 +90,10 @@ const DetermineWinnerPage = () => {
           <div className={s.winner}>
             <div className={s.phone}>
               +
-              <MyCounter number={9} delay={3} start={326} />
+              {/* <MyCounter number={9} delay={3} start={326} />
               <MyCounter number={9} delay={3.5} start={895} />
-              <MyCounter number={8} delay={4} start={456} />
-              &nbsp; (
+              <MyCounter number={8} delay={4} start={456} /> */}
+              998&nbsp;(
               {/* <MyCounter
                 number={+winner?.phoneNumber?.slice(4, 5)}
                 delay={4.5}
@@ -104,7 +104,7 @@ const DetermineWinnerPage = () => {
                 delay={4.5}
                 start={102}
               /> */}
-              **) &nbsp;
+              **)&nbsp;
               <MyCounter
                 number={+winner?.phoneNumber?.slice(6, 7)}
                 delay={5}
