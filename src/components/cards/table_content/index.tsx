@@ -1,11 +1,10 @@
 import { Button, Form, Table, TableProps, Tooltip } from 'antd';
 import { FilterAdd, FilterRemove } from 'iconsax-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FilterPagination from 'src/components/filter/pagination';
 import { colors } from 'src/constants/theme';
 import ContentTop from '../content_top';
 import s from './styles.module.scss';
-import useParamsHook from 'src/hooks/params';
 
 interface Props extends Omit<TableProps, 'title'> {
   title?: string;
@@ -25,8 +24,13 @@ function TableContent({
   headerExtra,
   tableHeightGap = 210.8,
 }: Props) {
-  const { params } = useParamsHook();
-  const [filterVisible, setFilterVisible] = useState(params ? true : false);
+  const [filterVisible, setFilterVisible] = useState(false);
+  useEffect(() => {
+    const allParams = new URL(window.location.href);
+    allParams.searchParams.delete('page');
+    allParams.searchParams.delete('size');
+    setFilterVisible(allParams.searchParams.toString() !== '');
+  }, []);
 
   return (
     <div className={s.container}>
