@@ -95,7 +95,7 @@ export const columns: ColumnsType<IMessageRes> = [
     title: 'Holati',
     dataIndex: 'isBroadcast',
     key: 'isBroadcast',
-    width: 100,
+    width: 120,
     render: (val) => (
       <p style={{ color: val ? colors.blue : colors.red }}>
         {val ? 'Umumiy' : 'Foydalanuvchi'}

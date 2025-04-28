@@ -1,0 +1,113 @@
+@import 'src/styles/variables';
+
+$bg: #f2f2f7;
+$title-color: rgb(73, 80, 87);
+
+.statistics {
+  width: calc(100% + 10px);
+  // max-height: calc(100vh - 60px);
+  // padding-bottom: 64px;
+
+  &-content {
+    @include scroll;
+    width: 100%;
+    height: calc(100vh - 110px);
+    padding-bottom: 24px;
+    padding-right: 10px;
+  }
+
+  &-card {
+    background-color: $bg;
+    // margin-top: 24px;
+    // padding: 16px;
+    border-radius: 4px;
+    padding-bottom: 16px;
+    overflow: hidden;
+    // display: inline-block;
+
+    &-title {
+      padding: 16px;
+      border-bottom: 1px solid #adb2b5;
+      h2 {
+        color: $title-color;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 19px;
+      }
+    }
+
+    &-content {
+      padding-top: 10px;
+      tr,
+      td,
+      th {
+        background-color: $bg !important;
+      }
+    }
+  }
+
+  .stat {
+    background-color: $bg;
+    height: 120px;
+    padding: 16px;
+    border-radius: 4px;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 15%;
+
+    &:nth-child(2) {
+      .stat-icon {
+        background-color: #45cb85;
+      }
+    }
+
+    &:nth-child(3) {
+      .stat-icon {
+        background-color: #f06548;
+      }
+    }
+
+    &:nth-child(4) {
+      .stat-icon {
+        background-color: #ffbe0b;
+      }
+    }
+
+    &:nth-child(5) {
+      .stat-icon {
+        background-color: #299cdb;
+      }
+    }
+
+    &-icon {
+      @include flex-center;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: #4b38b3;
+    }
+
+    .ant-statistic {
+      &-title {
+        // text-align: center;
+        // margin: auto;
+        text-align: left;
+        font-size: 14px;
+        margin-bottom: 7px;
+        color: $title-color;
+      }
+      &-content {
+        display: flex;
+        justify-content: space-between;
+
+        &-value {
+          font-size: 25px;
+          font-weight: 600;
+          line-height: 30px;
+          color: rgb(33, 37, 41);
+          padding-top: 24px;
+        }
+      }
+    }
+  }
+}

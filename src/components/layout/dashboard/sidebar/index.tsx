@@ -1,5 +1,5 @@
-import { Button, Popconfirm } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
+import { Button, Popconfirm } from 'antd';
 import {
   Category2,
   Chart1,
@@ -8,7 +8,9 @@ import {
   Messages,
   Profile2User,
   Security,
+  UserOctagon,
 } from 'iconsax-react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logout } from 'src/app/slices/authSlice';
 import { useAppDispatch } from 'src/app/store';
@@ -17,7 +19,6 @@ import images from 'src/constants/images';
 import { colors } from 'src/constants/theme';
 import MenuItem from './components/MenuItem';
 import './sidebar.scss';
-import { useState } from 'react';
 
 function LayoutSidebar() {
   const dispatch = useAppDispatch();
@@ -48,7 +49,7 @@ function LayoutSidebar() {
     {
       label: 'Top foydalanuvchilar',
       link: '/topusers',
-      icon: <Profile2User size="20" color={colors.white} />,
+      icon: <UserOctagon size="24" color={colors.white} />,
     },
     {
       label: 'Skanerlar',

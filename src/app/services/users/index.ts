@@ -168,6 +168,7 @@ export const authApi = api.injectEndpoints({
 export const {
   useLoginMutation,
   useGetUsersMutation,
+  useGetUsersDownloadMutation,
   useBlockUserMutation,
   useGetTopUsersMutation,
 

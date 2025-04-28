@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { hostName } from 'src/app/services/api/const';
 import {
-  useDownloadQrCodeMutation,
   useGenerateQRMutation,
   useGetQrCodesMutation,
 } from 'src/app/services/users';
@@ -22,10 +21,6 @@ function QRCodes() {
   const [get, { data: allData, isLoading }] = useGetQrCodesMutation();
   const [data, setData] = useState<IQRRes[]>();
   const [open, setOpen] = useState(false);
-
-  // Download QR code
-  const [download, { data: image }] = useDownloadQrCodeMutation();
-  // console.log('image', image);
 
   // Search params
   const { searchParams, params } = useParamsHook();

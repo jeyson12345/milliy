@@ -1,10 +1,19 @@
-import { lazy } from 'react';
+import Custom404Page from './404';
+import SignInPage from './auth/signIn';
+import MessagesPage from './messages';
+import QRCodesPage from './qr_codes';
+import ScansPage from './scans';
+import StatisticsPage from './statistics';
+import UsersPage from './users';
+import WinnersPage from './winners';
 
-export const Custom404Page = lazy(() => import('./404'));
-export const SignInPage = lazy(() => import('./auth/signIn'));
-export const MessagesPage = lazy(() => import('./messages'));
-export const QRCodesPage = lazy(() => import('./qr_codes'));
-export const ScansPage = lazy(() => import('./scans'));
-export const UsersPage = lazy(() => import('./users'));
-export const StatisticsPage = lazy(() => import('./statistics'));
-export const WinnersPage = lazy(() => import('./winners'));
+export {
+  Custom404Page,
+  MessagesPage,
+  QRCodesPage,
+  ScansPage,
+  SignInPage,
+  StatisticsPage,
+  UsersPage,
+  WinnersPage,
+};

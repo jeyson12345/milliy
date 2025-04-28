@@ -104,6 +104,7 @@ export interface Stats {
 export interface Demographics {
   gender: Gender;
   ageGroups: AgeGroups;
+  cities: Record<string, string>;
 }
 
 export interface Gender {

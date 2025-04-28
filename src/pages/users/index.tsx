@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import {
   useBlockUserMutation,
   useGetTopUsersMutation,
+  useGetUsersDownloadMutation,
   useGetUsersMutation,
 } from 'src/app/services/users';
 import { IUser } from 'src/app/services/users/type';
@@ -17,12 +18,13 @@ import { colors } from 'src/constants/theme';
 import useParamsHook from 'src/hooks/params';
 import { AddMessage } from '../messages/components/AddMessage';
 import { UserInfo } from './components/UserInfo';
-import { Button } from 'antd';
 
 function Users({ isTopUser }: { isTopUser?: boolean }) {
   // Methods
   const { pathname } = useLocation();
   const [get, { data: users, isLoading: usersLoading }] = useGetUsersMutation();
+  const [download, { isLoading: downloadLoading }] =
+    useGetUsersDownloadMutation();
   const [getTopUsers, { data: topUsers, isLoading: topUsersLoading }] =
     useGetTopUsersMutation();
   const [data, setData] = useState<IUser[]>();
@@ -34,6 +36,22 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
   const { searchParams, params } = useParamsHook();
   const page = searchParams.get('page');
   const size = searchParams.get('size');
+
+  // Download
+  const handleDownload = () => {
+    download(params)
+      .unwrap()
+      .then((res) => {
+        const blob = new Blob([res], { type: 'application/vnd.ms-excel' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'users.xlsx';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((err) => console.log(err));
+  };
 
   // Get
   const handleGet = () => {
@@ -128,11 +146,18 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
         dataSource={data}
         columns={columns}
         loading={isTopUser ? topUsersLoading : usersLoading}
-        headerExtra={
-          <Button size="large" type="primary">
-            Yuklash
-          </Button>
-        }
+        // headerExtra={
+        //   // <a href={hostName + '/admin/users/download?' + params}>
+        //   // <Button
+        //   //   size="large"
+        //   //   type="primary"
+        //   //   onClick={handleDownload}
+        //   //   loading={downloadLoading}
+        //   // >
+        //   //   Yuklash
+        //   // </Button>
+        //   // </a>
+        // }
         filters={
           <>
             <FilterRegion />

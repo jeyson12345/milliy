@@ -1,13 +1,9 @@
 import { useEffect, useState } from 'react';
 // import the core library.
-import 'echarts/lib/chart/pie';
 import ReactEcharts from 'echarts-for-react';
+import 'echarts/lib/chart/pie';
 import { DailyStat } from 'src/app/services/users/type';
 import { names } from 'src/utils';
-
-// interface IPieChart {
-//   data: Gender[] | AgeGroups[];
-// }
 
 export const PieChart = ({ data }: { data: any }) => {
   const [list, setList] = useState<{ value: number; name: string }[]>([]);
@@ -18,8 +14,9 @@ export const PieChart = ({ data }: { data: any }) => {
       trigger: 'item',
     },
     legend: {
-      bottom: '0%',
-      left: 'center',
+      orient: 'vertical',
+      x: 'left',
+      top: 'start',
     },
     series: [
       {
@@ -39,7 +36,7 @@ export const PieChart = ({ data }: { data: any }) => {
         emphasis: {
           label: {
             show: true,
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: 'bold',
           },
         },
@@ -65,7 +62,7 @@ export const PieChart = ({ data }: { data: any }) => {
     <>
       <ReactEcharts
         option={options}
-        style={{ width: '600px', height: '300px' }}
+        style={{ width: '600px', height: '270px' }}
       ></ReactEcharts>
     </>
   );
@@ -90,6 +87,7 @@ export const BarChart = ({ data }: { data: DailyStat[] | undefined }) => {
         data: list,
         type: 'bar',
         smooth: true,
+        barWidth: '20%',
       },
     ],
     tooltip: {
@@ -107,7 +105,7 @@ export const BarChart = ({ data }: { data: DailyStat[] | undefined }) => {
   return (
     <ReactEcharts
       option={options}
-      style={{ width: '95%', height: '300px' }}
+      style={{ width: '100%', height: '300px' }}
     ></ReactEcharts>
   );
 };
