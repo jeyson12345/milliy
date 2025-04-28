@@ -165,6 +165,7 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
             <FilterRangePicker />
           </>
         }
+        tableHeightGap={230.8}
       />
 
       <AddMessage
