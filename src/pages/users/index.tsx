@@ -18,6 +18,8 @@ import { colors } from 'src/constants/theme';
 import useParamsHook from 'src/hooks/params';
 import { AddMessage } from '../messages/components/AddMessage';
 import { UserInfo } from './components/UserInfo';
+import { Button } from 'antd';
+import { DocumentDownload } from 'iconsax-react';
 
 function Users({ isTopUser }: { isTopUser?: boolean }) {
   // Methods
@@ -50,7 +52,17 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
         a.click();
         window.URL.revokeObjectURL(url);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        const blob = new Blob([err?.data], {
+          type: 'application/vnd.ms-excel',
+        });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'users.xlsx';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
   };
 
   // Get
@@ -147,16 +159,15 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
         columns={columns}
         loading={isTopUser ? topUsersLoading : usersLoading}
         // headerExtra={
-        //   // <a href={hostName + '/admin/users/download?' + params}>
-        //   // <Button
-        //   //   size="large"
-        //   //   type="primary"
-        //   //   onClick={handleDownload}
-        //   //   loading={downloadLoading}
-        //   // >
-        //   //   Yuklash
-        //   // </Button>
-        //   // </a>
+        //   <Button
+        //     size="large"
+        //     type="primary"
+        //     onClick={handleDownload}
+        //     loading={downloadLoading}
+        //     icon={<DocumentDownload size="16" />}
+        //   >
+        //     Yuklash
+        //   </Button>
         // }
         filters={
           <>

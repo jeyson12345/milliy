@@ -60,7 +60,7 @@ export const UserInfo = ({ open = true, onClose, data }: IProps) => {
     {
       label: 'Jami bali',
       key: 'balance',
-      children: data?.balance,
+      children: (data?.scanCount || 0) + (data?.referralsCount || 0),
       span: 3,
     },
     {
