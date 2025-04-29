@@ -142,11 +142,11 @@ export const UserInfo = ({ open = true, onClose, data }: IProps) => {
         />
       ),
     },
-    {
-      key: '3',
-      label: 'Referallar',
-      children: 'Content of Tab Pane 3',
-    },
+    // {
+    //   key: '3',
+    //   label: 'Referallar',
+    //   children: 'Content of Tab Pane 3',
+    // },
   ];
 
   return (
