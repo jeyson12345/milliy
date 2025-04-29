@@ -1,4 +1,4 @@
-import { Button, Flex, Form, message, Modal } from 'antd';
+import { Button, Drawer, Flex, Form, message, Modal, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
@@ -7,20 +7,41 @@ import { hostName } from 'src/app/services/api/const';
 import {
   useGenerateQRMutation,
   useGetQrCodesMutation,
+  useGetScansMutation,
 } from 'src/app/services/users';
-import { IQRRes } from 'src/app/services/users/type';
+import { IQRRes, IScanRes } from 'src/app/services/users/type';
+import { IBaseId } from 'src/app/type';
 import { PlusIcon } from 'src/assets/icon';
 import TableContent from 'src/components/cards/table_content';
 import { DateFormItem, InputFormItem } from 'src/components/form';
 import { colors } from 'src/constants/theme';
 import useParamsHook from 'src/hooks/params';
+import { scanColumns } from '../scans';
 
 function QRCodes() {
   // Methods
   const { pathname } = useLocation();
   const [get, { data: allData, isLoading }] = useGetQrCodesMutation();
+  const [getScans, { isLoading: scanLoading }] = useGetScansMutation();
   const [data, setData] = useState<IQRRes[]>();
+  const [detail, setDetail] = useState<IQRRes | null>();
+  const [scans, setScans] = useState<IScanRes[]>();
   const [open, setOpen] = useState(false);
+
+  const handleGetScans = (id: IBaseId) => {
+    getScans('size=100000&qrCodeId=' + id)
+      .unwrap()
+      .then((res) => {
+        setScans(
+          res.items.map((item, index) => {
+            return {
+              ...item,
+              key: index + 1,
+            };
+          })
+        );
+      });
+  };
 
   // Search params
   const { searchParams, params } = useParamsHook();
@@ -49,6 +70,25 @@ function QRCodes() {
 
   const columns: ColumnsType<IQRRes> = [
     ...baseColumns,
+    {
+      width: 100,
+      title: 'Skanerlar',
+      dataIndex: '_id',
+      key: '_id',
+      fixed: 'right',
+      render: (id, el) => (
+        <Button
+          onClick={() => {
+            setDetail(el);
+            handleGetScans(id);
+          }}
+          type="link"
+          style={{ padding: '0 16px' }}
+        >
+          Ko'rish
+        </Button>
+      ),
+    },
     {
       title: 'Fayli',
       dataIndex: '_id',
@@ -83,60 +123,81 @@ function QRCodes() {
   };
 
   return (
-    <TableContent
-      title="QR-kodlar"
-      total={allData?.pagination?.total}
-      dataSource={data}
-      columns={columns}
-      loading={isLoading}
-      headerExtra={
-        <>
-          <Button
-            size="large"
-            type="primary"
-            icon={<PlusIcon />}
-            onClick={() => setOpen(true)}
-          >
-            Yangi QR-kod yaratish
-          </Button>
+    <>
+      <TableContent
+        title="QR-kodlar"
+        total={allData?.pagination?.total}
+        dataSource={data}
+        columns={columns}
+        loading={isLoading}
+        headerExtra={
+          <>
+            <Button
+              size="large"
+              type="primary"
+              icon={<PlusIcon />}
+              onClick={() => setOpen(true)}
+            >
+              Yangi QR-kod yaratish
+            </Button>
+          </>
+        }
+      />
 
-          <Modal
-            open={open}
-            footer={null}
-            title="Yangi QR-kod yaratish"
-            onCancel={() => {
-              setOpen(false);
-              form.resetFields();
-            }}
-          >
-            <Form layout="vertical" onFinish={onFinish} form={form}>
-              <InputFormItem
-                name="title"
-                label="Nomi"
-                message="QR kod nomini kiriting!"
-              />
-              <DateFormItem
-                name="startTime"
-                label="Boshlanish vaqti"
-                message="Boshlanish vaqtini tanlang!"
-                showTime
-              />
+      {/* Add new QR code */}
+      <Modal
+        open={open}
+        footer={null}
+        title="Yangi QR-kod yaratish"
+        onCancel={() => {
+          setOpen(false);
+          form.resetFields();
+        }}
+      >
+        <Form layout="vertical" onFinish={onFinish} form={form}>
+          <InputFormItem
+            name="title"
+            label="Nomi"
+            message="QR kod nomini kiriting!"
+          />
+          <DateFormItem
+            name="startTime"
+            label="Boshlanish vaqti"
+            message="Boshlanish vaqtini tanlang!"
+            showTime
+          />
 
-              <Flex justify="end">
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  size="large"
-                  loading={generateLoading}
-                >
-                  Yaratish
-                </Button>
-              </Flex>
-            </Form>
-          </Modal>
-        </>
-      }
-    />
+          <Flex justify="end">
+            <Button
+              type="primary"
+              htmlType="submit"
+              size="large"
+              loading={generateLoading}
+            >
+              Yaratish
+            </Button>
+          </Flex>
+        </Form>
+      </Modal>
+
+      {/* QR code scans */}
+      <Drawer
+        width={700}
+        open={!!detail}
+        onClose={() => setDetail(null)}
+        title={detail?.title + ' QR kod skanerlari'}
+        placement="right"
+        className="user-info-drawer"
+      >
+        <Table
+          dataSource={scans}
+          columns={[...scanColumns.slice(0, 2), scanColumns[4]]}
+          bordered
+          loading={scanLoading}
+          scroll={{ x: 100, y: innerHeight - 173 }}
+        />
+      </Drawer>
+    </>
   );
 }
 

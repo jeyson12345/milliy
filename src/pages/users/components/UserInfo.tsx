@@ -1,6 +1,16 @@
-import { Descriptions, DescriptionsProps, Drawer } from 'antd';
-import { IUser } from 'src/app/services/users/type';
+import {
+  Descriptions,
+  DescriptionsProps,
+  Drawer,
+  Table,
+  Tabs,
+  TabsProps,
+} from 'antd';
+import { useEffect, useState } from 'react';
+import { useGetScansMutation } from 'src/app/services/users';
+import { IScanRes, IUser } from 'src/app/services/users/type';
 import { colors } from 'src/constants/theme';
+import { scanColumns } from 'src/pages/scans';
 
 interface IProps {
   open: boolean;
@@ -9,7 +19,33 @@ interface IProps {
 }
 
 export const UserInfo = ({ open = true, onClose, data }: IProps) => {
-  const items: DescriptionsProps['items'] = [
+  const [getScans, { isLoading: scanLoading }] = useGetScansMutation();
+  const [scans, setScans] = useState<IScanRes[]>();
+  const [key, setKey] = useState('1');
+
+  const handleGetScans = () => {
+    if (data) {
+      setKey(`1`);
+      getScans('size=10000&userId=' + data?._id)
+        .unwrap()
+        .then((res) => {
+          setScans(
+            res.items.map((item, index) => {
+              return {
+                ...item,
+                key: index + 1,
+              };
+            })
+          );
+        });
+    }
+  };
+
+  useEffect(() => {
+    handleGetScans();
+  }, [data]);
+
+  const infoItems: DescriptionsProps['items'] = [
     {
       label: 'F.I.Sh.',
       key: 'firstName',
@@ -87,14 +123,46 @@ export const UserInfo = ({ open = true, onClose, data }: IProps) => {
     },
   ];
 
+  const items: TabsProps['items'] = [
+    {
+      key: '1',
+      label: 'Malumotlar',
+      children: <Descriptions bordered items={infoItems} />,
+    },
+    {
+      key: '2',
+      label: 'Skanerlar',
+      children: (
+        <Table
+          dataSource={scans}
+          columns={[scanColumns[0], ...scanColumns.slice(2)]}
+          bordered
+          loading={scanLoading}
+          scroll={{ x: 100, y: innerHeight - 234 }}
+        />
+      ),
+    },
+    {
+      key: '3',
+      label: 'Referallar',
+      children: 'Content of Tab Pane 3',
+    },
+  ];
+
   return (
     <Drawer
       width={600}
       open={open}
       onClose={onClose}
       title="Foydalanuvchi haqida"
+      className="user-info-drawer"
     >
-      <Descriptions bordered items={items} />
+      <Tabs
+        defaultActiveKey="1"
+        items={items}
+        activeKey={key}
+        onChange={setKey}
+      />
     </Drawer>
   );
 };

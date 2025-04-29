@@ -44,7 +44,7 @@ function Scans() {
       title="Skanerlar"
       total={allData?.pagination?.total}
       dataSource={data}
-      columns={columns}
+      columns={scanColumns}
       loading={isLoading}
       filters={
         <>
@@ -57,7 +57,7 @@ function Scans() {
 
 export default Scans;
 
-export const columns: ColumnsType<IScanRes> = [
+export const scanColumns: ColumnsType<IScanRes> = [
   {
     title: '№',
     dataIndex: 'key',

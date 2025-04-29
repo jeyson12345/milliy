@@ -18,8 +18,7 @@ import { colors } from 'src/constants/theme';
 import useParamsHook from 'src/hooks/params';
 import { AddMessage } from '../messages/components/AddMessage';
 import { UserInfo } from './components/UserInfo';
-import { Button } from 'antd';
-import { DocumentDownload } from 'iconsax-react';
+import './user.scss';
 
 function Users({ isTopUser }: { isTopUser?: boolean }) {
   // Methods

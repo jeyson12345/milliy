@@ -33,6 +33,12 @@ export const authApi = api.injectEndpoints({
         url: `/admin/users?` + params,
       }),
     }),
+    //Get user by id endpoint
+    getUserById: build.mutation<IBaseDataRes<IUser>, string>({
+      query: (id) => ({
+        url: `/admin/users/` + id,
+      }),
+    }),
     //Get user endpoint
     getUsersDownload: build.mutation<string, string>({
       query: (params) => ({
@@ -168,6 +174,7 @@ export const authApi = api.injectEndpoints({
 export const {
   useLoginMutation,
   useGetUsersMutation,
+  useGetUserByIdMutation,
   useGetUsersDownloadMutation,
   useBlockUserMutation,
   useGetTopUsersMutation,
