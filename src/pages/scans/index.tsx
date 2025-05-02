@@ -80,14 +80,12 @@ export const scanColumns: ColumnsType<IScanRes> = [
     title: 'QR-kod nomi',
     dataIndex: 'qrCodeId',
     key: 'qrCodeId',
-    // colSpan: 2,
     render: (val) => val?.title,
   },
   {
     title: 'QR-kod kodi',
     dataIndex: 'qrCodeId',
     key: 'qrCodeId',
-    // colSpan: 0,
     render: (val) => val?.code,
   },
   {

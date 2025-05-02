@@ -1,10 +1,12 @@
+import { Button } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { DocumentDownload } from 'iconsax-react';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { hostName } from 'src/app/services/api/const';
 import {
   useBlockUserMutation,
   useGetTopUsersMutation,
-  useGetUsersDownloadMutation,
   useGetUsersMutation,
 } from 'src/app/services/users';
 import { IUser } from 'src/app/services/users/type';
@@ -24,45 +26,109 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
   // Methods
   const { pathname } = useLocation();
   const [get, { data: users, isLoading: usersLoading }] = useGetUsersMutation();
-  const [download, { isLoading: downloadLoading }] =
-    useGetUsersDownloadMutation();
+
   const [getTopUsers, { data: topUsers, isLoading: topUsersLoading }] =
     useGetTopUsersMutation();
   const [data, setData] = useState<IUser[]>();
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<IUser | null>();
   const [openInfo, setOpenInfo] = useState(false);
+  const [downloadLoading, setDownloadLoading] = useState(false);
 
   // Search params
   const { searchParams, params } = useParamsHook();
-  const page = searchParams.get('page');
-  const size = searchParams.get('size');
+  const page = searchParams.get('page') || '1';
+  const size = searchParams.get('size') || '10';
+
+  const handleDownload = async () => {
+    setDownloadLoading(true);
+    try {
+      const response = await fetch(
+        `${hostName}/admin/users/download?${
+          params.includes('page') ? params : 'page=1&size=10&' + params
+        }`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to download file');
+      }
+
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const startIndex = (Number(page) - 1) * Number(size) + 1;
+      const endIndex = startIndex + Number(size) - 1;
+      link.download = `users(${startIndex}-${endIndex})-${Date.now()}.xlsx`;
+
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      alert('Failed to download file. Please try again.');
+    } finally {
+      setDownloadLoading(false);
+    }
+  };
 
   // Download
-  const handleDownload = () => {
-    download(params)
-      .unwrap()
-      .then((res) => {
-        const blob = new Blob([res], { type: 'application/vnd.ms-excel' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'users.xlsx';
-        a.click();
-        window.URL.revokeObjectURL(url);
-      })
-      .catch((err) => {
-        const blob = new Blob([err?.data], {
-          type: 'application/vnd.ms-excel',
-        });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'users.xlsx';
-        a.click();
-        window.URL.revokeObjectURL(url);
-      });
-  };
+  // const handleDownload = () => {
+  //   fetch('https://help24.uz/admin/users?city=Andijon+viloyati', {
+  //     headers: {
+  //       Authorization: `Bearer ${localStorage.getItem(TOKEN)}`,
+  //     },
+  //   })
+  //     .then((response) => response.blob())
+  //     .then((blob) => {
+  //       const url = window.URL.createObjectURL(blob);
+  //       const a = document.createElement('a');
+  //       a.href = url;
+  //       a.download = 'file.xlsx'; // Ensure correct extension
+  //       document.body.appendChild(a);
+  //       a.click();
+  //       document.body.removeChild(a);
+  //     });
+  //   // download(params)
+  //   //   .unwrap()
+  //   //   .then((res) => {
+  //   //     const blob = new Blob([res], { type: 'application/vnd.ms-excel' });
+  //   //     const url = window.URL.createObjectURL(blob);
+  //   //     const a = document.createElement('a');
+  //   //     a.href = url;
+  //   //     a.download = 'users.xls';
+  //   //     a.click();
+  //   //     window.URL.revokeObjectURL(url);
+  //   //   })
+  //   //   .catch((err) => {
+  //   //     // window.URL.revokeObjectURL(err?.data);
+  //   //     // console.log('err', err);
+  //   //     // const blob = new Blob([err?.data], {
+  //   //     //   type: 'application/vnd.ms-excel',
+  //   //     // });
+  //   //     console.log('err?.data', err?.data);
+  //   //     const blob = new Blob([err?.data], {
+  //   //       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // for .xlsx
+  //   //     });
+  //   //     const url = window.URL.createObjectURL(blob);
+  //   //     // window.open(url, '_blank');
+  //   //     const a = document.createElement('a');
+  //   //     a.href = url;
+  //   //     a.download = 'users.xlsx';
+  //   //     a.click();
+  //   //     window.URL.revokeObjectURL(url);
+  //   //   });
+  // };
 
   // Get
   const handleGet = () => {
@@ -157,17 +223,17 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
         dataSource={data}
         columns={columns}
         loading={isTopUser ? topUsersLoading : usersLoading}
-        // headerExtra={
-        //   <Button
-        //     size="large"
-        //     type="primary"
-        //     onClick={handleDownload}
-        //     loading={downloadLoading}
-        //     icon={<DocumentDownload size="16" />}
-        //   >
-        //     Yuklash
-        //   </Button>
-        // }
+        headerExtra={
+          <Button
+            size="large"
+            type="primary"
+            onClick={handleDownload}
+            loading={downloadLoading}
+            icon={<DocumentDownload size="16" />}
+          >
+            Yuklash
+          </Button>
+        }
         filters={
           <>
             <FilterRegion />
@@ -204,7 +270,7 @@ export const baseColumns: ColumnsType<IUser> = [
     dataIndex: 'key',
     key: 'key',
     fixed: 'left',
-    width: 50,
+    width: 70,
   },
   {
     title: 'F.I.Sh.',

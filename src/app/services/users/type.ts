@@ -1,4 +1,4 @@
-import { IBaseRes } from 'src/app/type';
+import { IBaseDataRes, IBaseId, IBaseRes } from 'src/app/type';
 
 export interface ILogin {
   username: string;
@@ -26,6 +26,33 @@ export interface IUser extends IBaseRes<object> {
   childrenCount: number;
   referralsCount: number;
   scanCount: number;
+}
+
+export interface IUserScansReferrals {
+  scanners: IBaseDataRes<IUserScans>;
+  referrals: IBaseDataRes<IUserReferrals>;
+}
+
+export interface IUserScans {
+  qrCode: {
+    code: string;
+    title: string;
+    _id: IBaseId;
+  };
+  registrationCompleted: boolean;
+  scannedAt: string;
+}
+
+export interface IUserReferrals {
+  registeredAt: string;
+  referred: {
+    firstName: string;
+    phoneNumber: string;
+    surname: string;
+    secondName: string;
+    telegramId: string;
+    _id: IBaseId;
+  };
 }
 
 export interface IBlockRes {

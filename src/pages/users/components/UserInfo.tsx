@@ -6,11 +6,12 @@ import {
   Tabs,
   TabsProps,
 } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-import { useGetScansMutation } from 'src/app/services/users';
-import { IScanRes, IUser } from 'src/app/services/users/type';
+import { useGetUserScansReferralsMutation } from 'src/app/services/users';
+import { IUser, IUserReferrals, IUserScans } from 'src/app/services/users/type';
 import { colors } from 'src/constants/theme';
-import { scanColumns } from 'src/pages/scans';
 
 interface IProps {
   open: boolean;
@@ -19,21 +20,31 @@ interface IProps {
 }
 
 export const UserInfo = ({ open = true, onClose, data }: IProps) => {
-  const [getScans, { isLoading: scanLoading }] = useGetScansMutation();
-  const [scans, setScans] = useState<IScanRes[]>();
+  const [get, { isLoading }] = useGetUserScansReferralsMutation();
+  const [scans, setScans] = useState<IUserScans[]>();
+  const [referrals, setReferrals] = useState<IUserReferrals[]>();
   const [key, setKey] = useState('1');
 
   const handleGetScans = () => {
     if (data) {
       setKey(`1`);
-      getScans('size=10000&userId=' + data?._id)
+      get(data?._id)
         .unwrap()
         .then((res) => {
           setScans(
-            res.items.map((item, index) => {
+            res?.scanners?.items?.map((item, index) => {
               return {
                 ...item,
                 key: index + 1,
+              };
+            })
+          );
+          setReferrals(
+            res?.referrals?.items?.map((item, index) => {
+              return {
+                ...item,
+                key: index + 1,
+                scannedAt: item.registeredAt,
               };
             })
           );
@@ -135,18 +146,26 @@ export const UserInfo = ({ open = true, onClose, data }: IProps) => {
       children: (
         <Table
           dataSource={scans}
-          columns={[scanColumns[0], ...scanColumns.slice(2)]}
+          columns={scanColumns}
           bordered
-          loading={scanLoading}
+          loading={isLoading}
           scroll={{ x: 100, y: innerHeight - 234 }}
         />
       ),
     },
-    // {
-    //   key: '3',
-    //   label: 'Referallar',
-    //   children: 'Content of Tab Pane 3',
-    // },
+    {
+      key: '3',
+      label: 'Referallar',
+      children: (
+        <Table
+          dataSource={referrals}
+          columns={referredColumns}
+          bordered
+          loading={isLoading}
+          scroll={{ x: 100, y: innerHeight - 234 }}
+        />
+      ),
+    },
   ];
 
   return (
@@ -166,3 +185,64 @@ export const UserInfo = ({ open = true, onClose, data }: IProps) => {
     </Drawer>
   );
 };
+
+const scanColumns: ColumnsType<IUserScans> = [
+  {
+    title: '№',
+    dataIndex: 'key',
+    key: 'key',
+    fixed: 'left',
+    width: 50,
+  },
+  {
+    title: 'QR-kod nomi',
+    dataIndex: 'qrCode',
+    key: 'qrCode',
+    render: (val) => val?.title,
+  },
+  {
+    title: 'QR-kod kodi',
+    dataIndex: 'qrCode',
+    key: 'qrCode',
+    render: (val) => val?.code,
+  },
+  {
+    title: 'Skanerlash vaqti',
+    dataIndex: 'scannedAt',
+    key: 'scannedAt',
+    render: (val) => dayjs(val).format('DD-MM-YYYY HH:mm:ss'),
+  },
+];
+
+const referredColumns: ColumnsType<IUserReferrals> = [
+  {
+    title: '№',
+    dataIndex: 'key',
+    key: 'key',
+    fixed: 'left',
+    width: 50,
+  },
+  {
+    title: 'Taklif qilingan foydalanuvchi',
+    dataIndex: 'referred',
+    key: 'referred',
+    render: (val) =>
+      (val?.firstName || '') +
+      ' ' +
+      (val?.surname || '') +
+      '' +
+      (val?.secondName || ''),
+  },
+  {
+    title: 'Telefon raqami',
+    dataIndex: 'referred',
+    key: 'referred',
+    render: (val) => val?.phoneNumber,
+  },
+  {
+    title: 'Skanerlash vaqti',
+    dataIndex: 'scannedAt',
+    key: 'scannedAt',
+    render: (val) => dayjs(val).format('DD-MM-YYYY HH:mm:ss'),
+  },
+];

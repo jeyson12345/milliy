@@ -12,6 +12,7 @@ import {
   IStatistcsRes,
   ITokensRes,
   IUser,
+  IUserScansReferrals,
   IWinnersRes,
 } from './type';
 
@@ -37,6 +38,12 @@ export const authApi = api.injectEndpoints({
     getUserById: build.mutation<IBaseDataRes<IUser>, string>({
       query: (id) => ({
         url: `/admin/users/` + id,
+      }),
+    }),
+    //Get user by id endpoint
+    getUserScansReferrals: build.mutation<IUserScansReferrals, string>({
+      query: (id) => ({
+        url: `/admin/users/${id}/scanners-and-referrals?size=1000`,
       }),
     }),
     //Get user endpoint
@@ -175,6 +182,7 @@ export const {
   useLoginMutation,
   useGetUsersMutation,
   useGetUserByIdMutation,
+  useGetUserScansReferralsMutation,
   useGetUsersDownloadMutation,
   useBlockUserMutation,
   useGetTopUsersMutation,

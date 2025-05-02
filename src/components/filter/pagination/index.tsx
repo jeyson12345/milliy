@@ -31,6 +31,7 @@ export default function FilterPagination({
       showSizeChanger
       style={{ marginTop: '16px', display: 'flex', justifyContent: 'flex-end' }}
       className="filter-pagination"
+      pageSizeOptions={['10', '20', '50', '100', '1000']}
       {...rest}
     />
   );
