@@ -154,7 +154,12 @@ function QRCodes() {
           form.resetFields();
         }}
       >
-        <Form layout="vertical" onFinish={onFinish} form={form}>
+        <Form
+          layout="vertical"
+          onFinish={onFinish}
+          form={form}
+          initialValues={{ validityHours: 1 }}
+        >
           <InputFormItem
             name="title"
             label="Nomi"
@@ -165,6 +170,13 @@ function QRCodes() {
             label="Boshlanish vaqti"
             message="Boshlanish vaqtini tanlang!"
             showTime
+          />
+          <InputFormItem
+            type="number"
+            name="validityHours"
+            label="Faollik vaqti (soat)"
+            message="Faollik vaqtini kiriting!"
+            min={1}
           />
 
           <Flex justify="end">
