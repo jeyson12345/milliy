@@ -6,11 +6,13 @@ import { useLocation } from 'react-router-dom';
 import { hostName } from 'src/app/services/api/const';
 import {
   useBlockUserMutation,
+  useGetTopUsersByReferralMutation,
   useGetTopUsersMutation,
+  useGetTopWeeklyUsersMutation,
   useGetUsersMutation,
 } from 'src/app/services/users';
 import { IUser } from 'src/app/services/users/type';
-import { IBaseId } from 'src/app/type';
+import { IBaseDataRes, IBaseId } from 'src/app/type';
 import TableActions from 'src/components/cards/table_actions';
 import TableContent from 'src/components/cards/table_content';
 import FilterDistrict from 'src/components/filter/district';
@@ -22,13 +24,26 @@ import { AddMessage } from '../messages/components/AddMessage';
 import { UserInfo } from './components/UserInfo';
 import './user.scss';
 
-function Users({ isTopUser }: { isTopUser?: boolean }) {
+interface Props {
+  isTopUser?: boolean;
+  isWeeklyUser?: boolean;
+  isReferralUser?: boolean;
+}
+
+function Users({ isTopUser, isWeeklyUser, isReferralUser }: Props) {
   // Methods
   const { pathname } = useLocation();
-  const [get, { data: users, isLoading: usersLoading }] = useGetUsersMutation();
 
-  const [getTopUsers, { data: topUsers, isLoading: topUsersLoading }] =
+  const [get, { data: users, isLoading: usersLoading }] = useGetUsersMutation();
+  const [getTopUsers, { data: topUsers, isLoading: topLoading }] =
     useGetTopUsersMutation();
+  const [getWeeklyUsers, { data: weeklyUsers, isLoading: weeklyLoading }] =
+    useGetTopWeeklyUsersMutation();
+  const [
+    getReferralUsers,
+    { data: referralUsers, isLoading: referralLoading },
+  ] = useGetTopUsersByReferralMutation();
+
   const [data, setData] = useState<IUser[]>();
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<IUser | null>();
@@ -82,88 +97,50 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
     }
   };
 
-  // Download
-  // const handleDownload = () => {
-  //   fetch('https://help24.uz/admin/users?city=Andijon+viloyati', {
-  //     headers: {
-  //       Authorization: `Bearer ${localStorage.getItem(TOKEN)}`,
-  //     },
-  //   })
-  //     .then((response) => response.blob())
-  //     .then((blob) => {
-  //       const url = window.URL.createObjectURL(blob);
-  //       const a = document.createElement('a');
-  //       a.href = url;
-  //       a.download = 'file.xlsx'; // Ensure correct extension
-  //       document.body.appendChild(a);
-  //       a.click();
-  //       document.body.removeChild(a);
-  //     });
-  //   // download(params)
-  //   //   .unwrap()
-  //   //   .then((res) => {
-  //   //     const blob = new Blob([res], { type: 'application/vnd.ms-excel' });
-  //   //     const url = window.URL.createObjectURL(blob);
-  //   //     const a = document.createElement('a');
-  //   //     a.href = url;
-  //   //     a.download = 'users.xls';
-  //   //     a.click();
-  //   //     window.URL.revokeObjectURL(url);
-  //   //   })
-  //   //   .catch((err) => {
-  //   //     // window.URL.revokeObjectURL(err?.data);
-  //   //     // console.log('err', err);
-  //   //     // const blob = new Blob([err?.data], {
-  //   //     //   type: 'application/vnd.ms-excel',
-  //   //     // });
-  //   //     console.log('err?.data', err?.data);
-  //   //     const blob = new Blob([err?.data], {
-  //   //       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // for .xlsx
-  //   //     });
-  //   //     const url = window.URL.createObjectURL(blob);
-  //   //     // window.open(url, '_blank');
-  //   //     const a = document.createElement('a');
-  //   //     a.href = url;
-  //   //     a.download = 'users.xlsx';
-  //   //     a.click();
-  //   //     window.URL.revokeObjectURL(url);
-  //   //   });
-  // };
-
   // Get
-  const handleGet = () => {
+  const handleGet = async () => {
     const initial = (Number(page || 1) - 1) * Number(size || 10);
-
+    let res: IBaseDataRes<IUser>;
+    const { abort: abortTop, unwrap: unwrapTop } = getTopUsers(params);
+    const { abort: abortWeekly, unwrap: unwrapWeekly } = getWeeklyUsers(params);
+    const { abort: abortReferral, unwrap: unwrapReferral } =
+      getReferralUsers(params);
+    const { abort, unwrap } = get(params);
     if (isTopUser) {
-      getTopUsers(params)
-        .unwrap()
-        .then((res) => {
-          setData(
-            res.items.map((item, index) => {
-              return {
-                ...item,
-                key: initial + index + 1,
-              };
-            })
-          );
-        });
+      abortWeekly();
+      abortReferral();
+      abort();
+      res = await unwrapTop();
+    } else if (isWeeklyUser) {
+      abortTop();
+      abortReferral();
+      abort();
+      res = await unwrapWeekly();
+    } else if (isReferralUser) {
+      abortTop();
+      abortWeekly();
+      abort();
+      res = await unwrapReferral();
     } else {
-      get(params)
-        .unwrap()
-        .then((res) => {
-          setData(
-            res.items.map((item, index) => {
-              return {
-                ...item,
-                key: initial + index + 1,
-              };
-            })
-          );
-        });
+      abortTop();
+      abortWeekly();
+      abortReferral();
+      res = await unwrap();
     }
+    if (res)
+      setData(
+        res.items.map((item, index) => {
+          return {
+            ...item,
+            key: initial + index + 1,
+          };
+        })
+      );
   };
 
-  useEffect(() => handleGet(), [params, pathname]);
+  useEffect(() => {
+    handleGet();
+  }, [params, pathname]);
 
   //Block user
   const [block, { originalArgs, isLoading: blockLoading }] =
@@ -187,6 +164,7 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
   };
 
   // Columns
+
   const columns: ColumnsType<IUser> = [
     ...baseColumns,
     {
@@ -213,26 +191,52 @@ function Users({ isTopUser }: { isTopUser?: boolean }) {
     },
   ];
 
+  if (!(isTopUser || isWeeklyUser || isReferralUser)) columns.splice(6, 1);
+  if (isReferralUser) columns.splice(6, 1, referralObj as any);
+
   return (
     <>
       <TableContent
-        title={isTopUser ? 'Top foydalanuvchilar' : 'Foydalanuvchilar'}
+        title={
+          isTopUser
+            ? 'Top foydalanuvchilar'
+            : isWeeklyUser
+            ? 'Top haftalik foydalanuvchilar' +
+              (weeklyUsers
+                ? ` (${new Date(weeklyUsers.period.start).toLocaleDateString(
+                    'uz-UZ'
+                  )} / ${new Date(weeklyUsers.period.end).toLocaleDateString(
+                    'uz-UZ'
+                  )})`
+                : '')
+            : isReferralUser
+            ? 'Top referal foydalanuvchilar'
+            : 'Foydalanuvchilar'
+        }
         total={
-          isTopUser ? topUsers?.pagination?.total : users?.pagination?.total
+          isTopUser
+            ? topUsers?.pagination?.total
+            : isWeeklyUser
+            ? weeklyUsers?.pagination.total
+            : isReferralUser
+            ? referralUsers?.pagination?.total
+            : users?.pagination?.total
         }
         dataSource={data}
         columns={columns}
-        loading={isTopUser ? topUsersLoading : usersLoading}
+        loading={usersLoading || topLoading || weeklyLoading || referralLoading}
         headerExtra={
-          <Button
-            size="large"
-            type="primary"
-            onClick={handleDownload}
-            loading={downloadLoading}
-            icon={<DocumentDownload size="16" />}
-          >
-            Yuklash
-          </Button>
+          isTopUser || isWeeklyUser || isReferralUser ? null : (
+            <Button
+              size="large"
+              type="primary"
+              onClick={handleDownload}
+              loading={downloadLoading}
+              icon={<DocumentDownload size="16" />}
+            >
+              Yuklash
+            </Button>
+          )
         }
         filters={
           <>
@@ -312,12 +316,11 @@ export const baseColumns: ColumnsType<IUser> = [
   },
   {
     title: 'Jami bali',
-    dataIndex: 'balance',
-    key: 'balance',
+    dataIndex: 'combinedScore',
+    key: 'combinedScore',
     width: 120,
     align: 'center',
-    render: (_, record) =>
-      Number(record?.referralsCount || 0) + Number(record?.scanCount || 0),
+    render: (val) => (val ? val.toLocaleString('uz-UZ') : ''),
     sorter: (a, b) => a.balance - b.balance,
   },
   {
@@ -341,3 +344,13 @@ export const baseColumns: ColumnsType<IUser> = [
     ),
   },
 ];
+
+const referralObj = {
+  title: 'Referallar soni',
+  dataIndex: 'referralsCount',
+  key: 'referralsCount',
+  width: 120,
+  align: 'center',
+  render: (val: number) => (val ? val.toLocaleString('uz-UZ') : ''),
+  sorter: (a: any, b: any) => a.balance - b.balance,
+};

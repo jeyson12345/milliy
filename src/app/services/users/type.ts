@@ -23,6 +23,7 @@ export interface IUser extends IBaseRes<object> {
   age: number;
   sex: string;
   balance: number;
+  combinedScore: number;
   childrenCount: number;
   referralsCount: number;
   scanCount: number;

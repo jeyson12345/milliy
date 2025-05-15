@@ -66,12 +66,12 @@ export const columns: ColumnsType<IWinnersRes> = [
     render: (_, { userId }) =>
       `${userId?.firstName} ${userId?.secondName} ${userId?.surname}`,
   },
-  {
-    title: 'Jami bali',
-    key: 'balans',
-    render: (_, { userId }) =>
-      userId?.referralsCount || 0 + userId?.scanCount || 0,
-  },
+  // {
+  //   title: 'Jami bali',
+  //   key: 'balans',
+  //   render: (_, { userId }) =>
+  //     userId?.referralsCount || 0 + userId?.scanCount || 0,
+  // },
   {
     title: 'Yutuq turi',
     key: 'type',

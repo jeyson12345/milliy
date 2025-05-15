@@ -37,6 +37,10 @@ export interface IBaseDataRes<TData> {
     page: number;
     limit: number;
   };
+  period: {
+    start: string;
+    end: string;
+  };
 }
 
 export interface IBaseDeleteRes {

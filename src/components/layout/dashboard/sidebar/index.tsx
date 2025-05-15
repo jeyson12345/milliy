@@ -52,6 +52,16 @@ function LayoutSidebar() {
       icon: <UserOctagon size="24" color={colors.white} />,
     },
     {
+      label: 'Haftalik foydalanuvchilar',
+      link: '/weekly_users',
+      icon: <UserOctagon size="24" color={colors.white} />,
+    },
+    {
+      label: 'Referal foydalanuvchilar',
+      link: '/referral_users',
+      icon: <UserOctagon size="24" color={colors.white} />,
+    },
+    {
       label: 'Skanerlar',
       link: '/scans',
       icon: <Category2 size="20" color={colors.white} />,

@@ -28,7 +28,7 @@ export const authApi = api.injectEndpoints({
     }),
 
     /////////////////// User endpoints //////////////////////
-    //Get user endpoint
+    //Get users endpoint
     getUsers: build.mutation<IBaseDataRes<IUser>, string>({
       query: (params) => ({
         url: `/admin/users?` + params,
@@ -40,22 +40,34 @@ export const authApi = api.injectEndpoints({
         url: `/admin/users/` + id,
       }),
     }),
-    //Get user by id endpoint
+    //Get user scans endpoint
     getUserScansReferrals: build.mutation<IUserScansReferrals, string>({
       query: (id) => ({
         url: `/admin/users/${id}/scanners-and-referrals?size=1000`,
       }),
     }),
-    //Get user endpoint
+    //Get users donwload endpoint
     getUsersDownload: build.mutation<string, string>({
       query: (params) => ({
         url: `/admin/users/download?` + params,
       }),
     }),
-    //Get top user endpoint
+    //Get top users endpoint
     getTopUsers: build.mutation<IBaseDataRes<IUser>, string>({
       query: (params) => ({
         url: `/admin/top-users?` + params,
+      }),
+    }),
+    //Get top weekly users endpoint
+    getTopWeeklyUsers: build.mutation<IBaseDataRes<IUser>, string>({
+      query: (params) => ({
+        url: `/admin/users/top-weekly?` + params,
+      }),
+    }),
+    //Get top users by referral endpoint
+    getTopUsersByReferral: build.mutation<IBaseDataRes<IUser>, string>({
+      query: (params) => ({
+        url: `/admin/users/top-users-by-referral?` + params,
       }),
     }),
     //Block user endpoint
@@ -186,6 +198,8 @@ export const {
   useGetUsersDownloadMutation,
   useBlockUserMutation,
   useGetTopUsersMutation,
+  useGetTopWeeklyUsersMutation,
+  useGetTopUsersByReferralMutation,
 
   // Stats endpoints
   useGetStatsQuery,
