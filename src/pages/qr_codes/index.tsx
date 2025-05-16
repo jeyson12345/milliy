@@ -108,7 +108,7 @@ function QRCodes() {
   const [generate, { isLoading: generateLoading }] = useGenerateQRMutation();
   const onFinish = (val: any) => {
     let obj = {
-      validityHours: 1,
+      validityHours: val?.validityHours || 1,
       title: val?.title,
       startTime: new Date(val?.startTime).toISOString(),
     };
