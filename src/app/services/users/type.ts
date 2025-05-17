@@ -33,6 +33,7 @@ export interface IUser extends IBaseRes<object> {
   childrenCount: number;
   referralsCount: number;
   scanCount: number;
+  answerCount: number;
 }
 
 export interface IUserScansReferrals {

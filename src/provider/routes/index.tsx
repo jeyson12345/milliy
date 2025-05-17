@@ -44,6 +44,7 @@ function RoutElements() {
         <Route path="/topusers" element={<UsersPage isTopUser />} />
         <Route path="/weekly_users" element={<UsersPage isWeeklyUser />} />
         <Route path="/referral_users" element={<UsersPage isReferralUser />} />
+        <Route path="/answers_users" element={<UsersPage isAnswerUser />} />
         <Route path="/messages" element={<MessagesPage />} />
         <Route path="/questions" element={<QuestionsPage />} />
         <Route path="*" element={<Custom404Page />} />

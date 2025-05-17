@@ -1,10 +1,13 @@
 import { MenuOutlined } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
 import {
+  Autobrightness,
+  Calendar,
   Category2,
   Chart1,
   Cup,
   Firstline,
+  Link,
   MessageQuestion,
   Messages,
   Profile2User,
@@ -55,12 +58,17 @@ function LayoutSidebar() {
     {
       label: 'Haftalik foydalanuvchilar',
       link: '/weekly_users',
-      icon: <UserOctagon size="24" color={colors.white} />,
+      icon: <Calendar size="24" color={colors.white} />,
     },
     {
       label: 'Referal foydalanuvchilar',
       link: '/referral_users',
-      icon: <UserOctagon size="24" color={colors.white} />,
+      icon: <Link size="24" color={colors.white} />,
+    },
+    {
+      label: 'Savol foydalanuvchilari',
+      link: '/answers_users',
+      icon: <Autobrightness size="24" color={colors.white} />,
     },
     {
       label: 'Skanerlar',

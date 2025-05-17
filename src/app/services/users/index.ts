@@ -73,6 +73,12 @@ export const authApi = api.injectEndpoints({
         url: `/admin/users/top-users-by-referral?` + params,
       }),
     }),
+    //Get top users by referral endpoint
+    getTopUsersByAnswers: build.mutation<IBaseDataRes<IUser>, string>({
+      query: (params) => ({
+        url: `/admin/users/by-answers?` + params,
+      }),
+    }),
     //Block user endpoint
     blockUser: build.mutation<IBlockRes, IBaseId>({
       query: (userId) => ({
@@ -235,6 +241,7 @@ export const {
   useGetTopUsersMutation,
   useGetTopWeeklyUsersMutation,
   useGetTopUsersByReferralMutation,
+  useGetTopUsersByAnswersMutation,
 
   // Stats endpoints
   useGetStatsQuery,

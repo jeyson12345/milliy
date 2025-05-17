@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 import { hostName } from 'src/app/services/api/const';
 import {
   useBlockUserMutation,
+  useGetTopUsersByAnswersMutation,
   useGetTopUsersByReferralMutation,
   useGetTopUsersMutation,
   useGetTopWeeklyUsersMutation,
@@ -28,9 +29,15 @@ interface Props {
   isTopUser?: boolean;
   isWeeklyUser?: boolean;
   isReferralUser?: boolean;
+  isAnswerUser?: boolean;
 }
 
-function Users({ isTopUser, isWeeklyUser, isReferralUser }: Props) {
+function Users({
+  isTopUser,
+  isWeeklyUser,
+  isReferralUser,
+  isAnswerUser,
+}: Props) {
   // Methods
   const { pathname } = useLocation();
 
@@ -43,6 +50,8 @@ function Users({ isTopUser, isWeeklyUser, isReferralUser }: Props) {
     getReferralUsers,
     { data: referralUsers, isLoading: referralLoading },
   ] = useGetTopUsersByReferralMutation();
+  const [getAnswerUsers, { data: answersUsers, isLoading: answersLoading }] =
+    useGetTopUsersByAnswersMutation();
 
   const [data, setData] = useState<IUser[]>();
   const [open, setOpen] = useState(false);
@@ -105,26 +114,38 @@ function Users({ isTopUser, isWeeklyUser, isReferralUser }: Props) {
     const { abort: abortWeekly, unwrap: unwrapWeekly } = getWeeklyUsers(params);
     const { abort: abortReferral, unwrap: unwrapReferral } =
       getReferralUsers(params);
+    const { abort: abortAnswers, unwrap: unwrapAnswers } =
+      getAnswerUsers(params);
     const { abort, unwrap } = get(params);
     if (isTopUser) {
       abortWeekly();
       abortReferral();
+      abortAnswers();
       abort();
       res = await unwrapTop();
     } else if (isWeeklyUser) {
       abortTop();
       abortReferral();
+      abortAnswers();
       abort();
       res = await unwrapWeekly();
     } else if (isReferralUser) {
       abortTop();
       abortWeekly();
+      abortAnswers();
       abort();
       res = await unwrapReferral();
+    } else if (isAnswerUser) {
+      abortTop();
+      abortWeekly();
+      abortReferral();
+      abort();
+      res = await unwrapAnswers();
     } else {
       abortTop();
       abortWeekly();
       abortReferral();
+      abortAnswers();
       res = await unwrap();
     }
     if (res)
@@ -193,6 +214,8 @@ function Users({ isTopUser, isWeeklyUser, isReferralUser }: Props) {
 
   if (!(isTopUser || isWeeklyUser || isReferralUser)) columns.splice(6, 1);
   if (isReferralUser) columns.splice(6, 1, referralObj as any);
+  if (isAnswerUser) columns.splice(2, 1, answersCountObj as any);
+  if (isAnswerUser) columns.splice(3, 1, answersObj as any);
 
   return (
     <>
@@ -211,6 +234,8 @@ function Users({ isTopUser, isWeeklyUser, isReferralUser }: Props) {
                 : '')
             : isReferralUser
             ? 'Top referal foydalanuvchilar'
+            : isAnswerUser
+            ? 'Top savol javob foydalanuvchilari'
             : 'Foydalanuvchilar'
         }
         total={
@@ -220,6 +245,8 @@ function Users({ isTopUser, isWeeklyUser, isReferralUser }: Props) {
             ? weeklyUsers?.pagination.total
             : isReferralUser
             ? referralUsers?.pagination?.total
+            : isAnswerUser
+            ? answersUsers?.pagination?.total
             : users?.pagination?.total
         }
         dataSource={data}
@@ -349,6 +376,24 @@ const referralObj = {
   title: 'Referallar soni',
   dataIndex: 'referralsCount',
   key: 'referralsCount',
+  width: 120,
+  align: 'center',
+  render: (val: number) => (val ? val.toLocaleString('uz-UZ') : ''),
+  sorter: (a: any, b: any) => a.balance - b.balance,
+};
+const answersCountObj = {
+  title: 'Jami javoblar soni',
+  dataIndex: 'answerCount',
+  key: 'answerCount',
+  width: 130,
+  align: 'center',
+  render: (val: number) => (val ? val.toLocaleString('uz-UZ') : ''),
+  sorter: (a: any, b: any) => a.balance - b.balance,
+};
+const answersObj = {
+  title: 'Jami javob ballari',
+  dataIndex: 'totalBonus',
+  key: 'totalBonus',
   width: 120,
   align: 'center',
   render: (val: number) => (val ? val.toLocaleString('uz-UZ') : ''),
