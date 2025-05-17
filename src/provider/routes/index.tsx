@@ -9,6 +9,7 @@ import {
   Custom404Page,
   MessagesPage,
   QRCodesPage,
+  QuestionsPage,
   ScansPage,
   SignInPage,
   StatisticsPage,
@@ -44,6 +45,7 @@ function RoutElements() {
         <Route path="/weekly_users" element={<UsersPage isWeeklyUser />} />
         <Route path="/referral_users" element={<UsersPage isReferralUser />} />
         <Route path="/messages" element={<MessagesPage />} />
+        <Route path="/questions" element={<QuestionsPage />} />
         <Route path="*" element={<Custom404Page />} />
       </Route>
     </Routes>

@@ -14,6 +14,11 @@ export type IBaseNameRes<TData = {}> = TData & {
   name_ru: string;
 };
 
+export interface IBaseTranslateRes {
+  uz_latin: string;
+  uz_cyrillic: string;
+}
+
 export interface IBaseEdit<TData> {
   id: IBaseRes<TData>['_id'];
   body: Partial<TData>;

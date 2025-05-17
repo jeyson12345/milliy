@@ -12,6 +12,7 @@ interface Props extends Omit<TableProps, 'title'> {
   filters?: React.ReactNode;
   headerExtra?: React.ReactNode;
   tableHeightGap?: number;
+  paginationVisible?: boolean;
 }
 
 function TableContent({
@@ -23,6 +24,7 @@ function TableContent({
   loading,
   headerExtra,
   tableHeightGap = 210.8,
+  paginationVisible = true,
 }: Props) {
   const [filterVisible, setFilterVisible] = useState(false);
   useEffect(() => {
@@ -70,7 +72,7 @@ function TableContent({
           scroll={{ x: 1000, y: innerHeight - tableHeightGap }}
           pagination={false}
         />
-        <FilterPagination total={total} />
+        {paginationVisible && <FilterPagination total={total} />}
       </div>
       {filterVisible && (
         <div className={s.right}>

@@ -6,6 +6,7 @@ import ScansPage from './scans';
 import StatisticsPage from './statistics';
 import UsersPage from './users';
 import WinnersPage from './winners';
+import QuestionsPage from './questions';
 
 export {
   Custom404Page,
@@ -16,4 +17,5 @@ export {
   StatisticsPage,
   UsersPage,
   WinnersPage,
+  QuestionsPage,
 };

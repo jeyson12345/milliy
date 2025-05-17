@@ -1,4 +1,4 @@
-import { IBaseDataRes, IBaseId } from 'src/app/type';
+import { IBaseDataRes, IBaseDeleteRes, IBaseId } from 'src/app/type';
 import { api } from '../api';
 import {
   IBlockRes,
@@ -7,6 +7,9 @@ import {
   IMessageRes,
   IQRDto,
   IQRRes,
+  IQuestionAnswerRes,
+  IQuestionDto,
+  IQuestionRes,
   IRegion,
   IScanRes,
   IStatistcsRes,
@@ -116,7 +119,7 @@ export const authApi = api.injectEndpoints({
       }),
     }),
 
-    /////////////////// Scan endpoints //////////////////////
+    /////////////////// Scans endpoints //////////////////////
     //Get scans endpoint
     getScans: build.mutation<IBaseDataRes<IScanRes>, string>({
       query: (params) => ({
@@ -187,6 +190,38 @@ export const authApi = api.injectEndpoints({
         url: `/locations/regions/${id}`,
       }),
     }),
+
+    /////////////////// Questions endpoints //////////////////////
+    //Get questions endpoint
+    getQuestions: build.mutation<IQuestionRes[], string>({
+      query: (params) => ({
+        url: `/questions?` + params,
+      }),
+    }),
+    //Get question answers endpoint
+    getQuestionAnswers: build.mutation<
+      IBaseDataRes<IQuestionAnswerRes>,
+      string
+    >({
+      query: (id) => ({
+        url: `/questions/${id}/answers`,
+      }),
+    }),
+    //Add question endpoint
+    addQuestion: build.mutation<IQuestionRes, IQuestionDto>({
+      query: (body) => ({
+        url: `/questions`,
+        method: 'POST',
+        body,
+      }),
+    }),
+    // Delete question endpoint
+    deleteQuestion: build.mutation<IBaseDeleteRes, IBaseId>({
+      query: (id) => ({
+        url: `/questions/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -226,4 +261,10 @@ export const {
   //Location endpoints
   useGetRegionsQuery,
   useGetDistrictsQuery,
+
+  // Questions endpoints
+  useGetQuestionsMutation,
+  useAddQuestionMutation,
+  useDeleteQuestionMutation,
+  useGetQuestionAnswersMutation,
 } = authApi;

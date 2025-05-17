@@ -1,4 +1,9 @@
-import { IBaseDataRes, IBaseId, IBaseRes } from 'src/app/type';
+import {
+  IBaseDataRes,
+  IBaseId,
+  IBaseRes,
+  IBaseTranslateRes,
+} from 'src/app/type';
 
 export interface ILogin {
   username: string;
@@ -11,6 +16,7 @@ export interface ITokensRes {
 }
 
 export interface IUser extends IBaseRes<object> {
+  fullName: string;
   firstName: string;
   surname: string;
   secondName: string;
@@ -153,4 +159,20 @@ export interface AgeGroups {
 export interface DailyStat {
   _id: string;
   count: number;
+}
+
+// Question types
+export interface IQuestionDto {
+  type: 'multiple_choice' | 'open';
+  hasCorrectAnswer: boolean;
+  bonus: number;
+  question: IBaseTranslateRes;
+  options?: IBaseTranslateRes[];
+  correctAnswer?: IBaseTranslateRes;
+}
+export interface IQuestionRes extends IBaseRes<IQuestionDto> {}
+
+export interface IQuestionAnswerRes extends IUser {
+  answer: string;
+  bonus: number;
 }

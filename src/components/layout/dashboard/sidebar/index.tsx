@@ -5,6 +5,7 @@ import {
   Chart1,
   Cup,
   Firstline,
+  MessageQuestion,
   Messages,
   Profile2User,
   Security,
@@ -75,6 +76,11 @@ function LayoutSidebar() {
       label: 'Xabarlar',
       link: '/messages',
       icon: <Messages size="20" color={colors.white} />,
+    },
+    {
+      label: 'Savol javoblar',
+      link: '/questions',
+      icon: <MessageQuestion size="20" color={colors.white} />,
     },
   ];
 
