@@ -1,5 +1,12 @@
 import { Button, Popconfirm, Tooltip } from 'antd';
-import { Eye, Forbidden, Forbidden2, MessageText1 } from 'iconsax-react';
+import {
+  Bag,
+  Edit2,
+  Eye,
+  Forbidden,
+  Forbidden2,
+  MessageText1,
+} from 'iconsax-react';
 import { useState } from 'react';
 import './table_actions.scss';
 
@@ -7,6 +14,9 @@ interface Props {
   onView?: () => void;
   onMessage?: () => void;
   onBlock?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  deleteLoading?: boolean;
   blockLoading?: boolean;
   isBlocked?: boolean;
 }
@@ -15,14 +25,23 @@ function TableActions({
   onView,
   onMessage,
   onBlock,
+  onEdit,
+  onDelete,
+  deleteLoading,
   blockLoading,
   isBlocked,
 }: Props) {
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
 
   const handleConfirm = () => {
     onBlock?.();
     setOpen(false);
+  };
+
+  const handleDelete = () => {
+    onDelete?.();
+    setOpenDelete(false);
   };
 
   return (
@@ -32,6 +51,14 @@ function TableActions({
           <Tooltip title="Ko'rish">
             <Button className="table_action-btn-blue" onClick={onView}>
               <Eye size="16" />
+            </Button>
+          </Tooltip>
+        )}
+
+        {onEdit && (
+          <Tooltip title="Ko'rish">
+            <Button className="table_action-btn-yellow" onClick={onEdit}>
+              <Edit2 size="16" />
             </Button>
           </Tooltip>
         )}
@@ -55,6 +82,18 @@ function TableActions({
             </Button>
           </Tooltip>
         )}
+
+        {onDelete && (
+          <Tooltip title="O'chirish">
+            <Button
+              className="table_action-btn-red"
+              onClick={() => setOpenDelete(true)}
+              loading={deleteLoading}
+            >
+              <Bag size="16" />
+            </Button>
+          </Tooltip>
+        )}
       </div>
 
       <Popconfirm
@@ -69,6 +108,16 @@ function TableActions({
         okText="Ha"
         cancelText="Yo'q"
         open={open}
+      />
+
+      <Popconfirm
+        title="O'chirish"
+        description="O'chirishni tasdiqlaysizmi?"
+        onConfirm={handleDelete}
+        onCancel={() => setOpenDelete(false)}
+        okText="Ha"
+        cancelText="Yo'q"
+        open={openDelete}
       />
     </>
   );

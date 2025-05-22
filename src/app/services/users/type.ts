@@ -177,3 +177,10 @@ export interface IQuestionAnswerRes extends IUser {
   answer: string;
   bonus: number;
 }
+
+// Link types
+export interface ILinkDto {
+  link: string;
+  title: string;
+}
+export interface ILinkRes extends IBaseRes<ILinkDto> {}

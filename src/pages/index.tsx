@@ -1,5 +1,7 @@
 import Custom404Page from './404';
 import SignInPage from './auth/signIn';
+import DetermineWinnerPage from './determine_winner';
+import LinksPage from './links';
 import MessagesPage from './messages';
 import QRCodesPage from './qr_codes';
 import ScansPage from './scans';
@@ -10,6 +12,8 @@ import QuestionsPage from './questions';
 
 export {
   Custom404Page,
+  DetermineWinnerPage,
+  LinksPage,
   MessagesPage,
   QRCodesPage,
   ScansPage,

@@ -1,18 +1,15 @@
 import { MenuOutlined } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
 import {
-  Autobrightness,
-  Calendar,
   Category2,
   Chart1,
   Cup,
   Firstline,
-  Link,
+  Instagram,
   MessageQuestion,
   Messages,
   Profile2User,
   Security,
-  UserOctagon,
 } from 'iconsax-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -51,26 +48,6 @@ function LayoutSidebar() {
       icon: <Profile2User size="20" color={colors.white} />,
     },
     {
-      label: 'Top foydalanuvchilar',
-      link: '/topusers',
-      icon: <UserOctagon size="24" color={colors.white} />,
-    },
-    {
-      label: 'Haftalik foydalanuvchilar',
-      link: '/weekly_users',
-      icon: <Calendar size="24" color={colors.white} />,
-    },
-    {
-      label: 'Referal foydalanuvchilar',
-      link: '/referral_users',
-      icon: <Link size="24" color={colors.white} />,
-    },
-    {
-      label: 'Savol foydalanuvchilari',
-      link: '/answers_users',
-      icon: <Autobrightness size="24" color={colors.white} />,
-    },
-    {
       label: 'Skanerlar',
       link: '/scans',
       icon: <Category2 size="20" color={colors.white} />,
@@ -89,6 +66,11 @@ function LayoutSidebar() {
       label: 'Savol javoblar',
       link: '/questions',
       icon: <MessageQuestion size="20" color={colors.white} />,
+    },
+    {
+      label: 'Instagram havolalari',
+      link: '/links',
+      icon: <Instagram size="20" color={colors.white} />,
     },
   ];
 

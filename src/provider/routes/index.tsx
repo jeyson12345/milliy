@@ -1,12 +1,14 @@
 import { Route, Routes } from 'react-router-dom';
 import { useTypedSelector } from 'src/app/store';
-import { AuthLayout, DashboardLayout } from 'src/components/layout';
 
 // Layouts
+import { AuthLayout, DashboardLayout } from 'src/components/layout';
 
 // Pages
 import {
   Custom404Page,
+  DetermineWinnerPage,
+  LinksPage,
   MessagesPage,
   QRCodesPage,
   QuestionsPage,
@@ -16,7 +18,6 @@ import {
   UsersPage,
   WinnersPage,
 } from 'src/pages';
-import DetermineWinnerPage from 'src/pages/determine_winner';
 
 function RoutElements() {
   const { isAuthenticated } = useTypedSelector((state) => state.auth);
@@ -41,12 +42,9 @@ function RoutElements() {
         <Route path="/scans" element={<ScansPage />} />
         <Route path="/users" element={<UsersPage />} />
         <Route path="/winners" element={<WinnersPage />} />
-        <Route path="/topusers" element={<UsersPage isTopUser />} />
-        <Route path="/weekly_users" element={<UsersPage isWeeklyUser />} />
-        <Route path="/referral_users" element={<UsersPage isReferralUser />} />
-        <Route path="/answers_users" element={<UsersPage isAnswerUser />} />
         <Route path="/messages" element={<MessagesPage />} />
         <Route path="/questions" element={<QuestionsPage />} />
+        <Route path="/links" element={<LinksPage />} />
         <Route path="*" element={<Custom404Page />} />
       </Route>
     </Routes>

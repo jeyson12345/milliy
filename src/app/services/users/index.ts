@@ -1,8 +1,10 @@
-import { IBaseDataRes, IBaseDeleteRes, IBaseId } from 'src/app/type';
+import { IBaseDataRes, IBaseDeleteRes, IBaseEdit, IBaseId } from 'src/app/type';
 import { api } from '../api';
 import {
   IBlockRes,
   IDistrict,
+  ILinkDto,
+  ILinkRes,
   ILogin,
   IMessageRes,
   IQRDto,
@@ -79,6 +81,12 @@ export const authApi = api.injectEndpoints({
         url: `/admin/users/by-answers?` + params,
       }),
     }),
+    //Get top users by referral endpoint
+    getTopUsersByLinks: build.mutation<IBaseDataRes<IUser>, string>({
+      query: (params) => ({
+        url: `/links/most-active-users?` + params,
+      }),
+    }),
     //Block user endpoint
     blockUser: build.mutation<IBlockRes, IBaseId>({
       query: (userId) => ({
@@ -113,6 +121,20 @@ export const authApi = api.injectEndpoints({
     selectMonthlyWinner: build.mutation<IUser, void>({
       query: () => ({
         url: `/winners/select-monthly-winner`,
+        method: 'POST',
+      }),
+    }),
+    //Select referral winner endpoint
+    selectReferralWinner: build.mutation<IUser, void>({
+      query: () => ({
+        url: `/winners/select-referral-winner`,
+        method: 'POST',
+      }),
+    }),
+    //Select answer winner endpoint
+    selectAnswerWinner: build.mutation<IUser, void>({
+      query: () => ({
+        url: `/winners/select-answer-winner`,
         method: 'POST',
       }),
     }),
@@ -228,6 +250,36 @@ export const authApi = api.injectEndpoints({
         method: 'DELETE',
       }),
     }),
+    /////////////////// Links endpoints //////////////////////
+    //Get links endpoint
+    getLinks: build.mutation<IBaseDataRes<ILinkRes>, string>({
+      query: (params) => ({
+        url: `/links?` + params,
+      }),
+    }),
+    //Add link endpoint
+    addLink: build.mutation<ILinkRes, Partial<ILinkDto>>({
+      query: (body) => ({
+        url: `/links`,
+        method: 'POST',
+        body,
+      }),
+    }),
+    //Edit link endpoint
+    editLink: build.mutation<ILinkRes, IBaseEdit<ILinkDto>>({
+      query: ({ id, body }) => ({
+        url: `/links/${id}`,
+        method: 'PUT',
+        body,
+      }),
+    }),
+    //Delete link endpoint
+    deleteLink: build.mutation<IBaseDeleteRes, IBaseId>({
+      query: (id) => ({
+        url: `/links/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -242,6 +294,7 @@ export const {
   useGetTopWeeklyUsersMutation,
   useGetTopUsersByReferralMutation,
   useGetTopUsersByAnswersMutation,
+  useGetTopUsersByLinksMutation,
 
   // Stats endpoints
   useGetStatsQuery,
@@ -259,6 +312,8 @@ export const {
   useSelectDailyWinnerMutation,
   useSelectWeeklyWinnerMutation,
   useSelectMonthlyWinnerMutation,
+  useSelectReferralWinnerMutation,
+  useSelectAnswerWinnerMutation,
 
   // Messages endpoints
   useGetMessagesMutation,
@@ -274,4 +329,10 @@ export const {
   useAddQuestionMutation,
   useDeleteQuestionMutation,
   useGetQuestionAnswersMutation,
+
+  // Links endpoints
+  useGetLinksMutation,
+  useAddLinkMutation,
+  useEditLinkMutation,
+  useDeleteLinkMutation,
 } = authApi;

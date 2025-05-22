@@ -3,8 +3,10 @@ import Lottie from 'lottie-react';
 import { useState } from 'react';
 import CountUp from 'react-countup';
 import {
+  useSelectAnswerWinnerMutation,
   useSelectDailyWinnerMutation,
   useSelectMonthlyWinnerMutation,
+  useSelectReferralWinnerMutation,
   useSelectWeeklyWinnerMutation,
 } from 'src/app/services/users';
 import { IUser } from 'src/app/services/users/type';
@@ -36,42 +38,45 @@ const MyCounter = ({
   );
 };
 
-const DetermineWinnerPage = () => {
+const DetermineWinner = () => {
   const [daily, { isLoading: dLoading }] = useSelectDailyWinnerMutation();
   const [weekly, { isLoading: wLoading }] = useSelectWeeklyWinnerMutation();
   const [monthly, { isLoading: mLoading }] = useSelectMonthlyWinnerMutation();
-  const loading = dLoading || wLoading || mLoading;
+  const [referral, { isLoading: rLoading }] = useSelectReferralWinnerMutation();
+  const [answer, { isLoading: aLoading }] = useSelectAnswerWinnerMutation();
+
+  const loading = dLoading || wLoading || mLoading || rLoading || aLoading;
 
   const [winner, setWinner] = useState<IUser | undefined>();
   const [type, setType] = useState('Bugun');
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    let res: IUser | undefined = undefined;
     if (type === 'Bugun') {
-      daily()
-        .unwrap()
-        .then((res) => {
-          setWinner(res);
-        });
+      res = await daily().unwrap();
     } else if (type === 'Oxirgi hafta') {
-      weekly()
-        .unwrap()
-        .then((res) => {
-          setWinner(res);
-        });
+      res = await weekly().unwrap();
     } else if (type === 'Oxirgi oy') {
-      monthly()
-        .unwrap()
-        .then((res) => {
-          setWinner(res);
-        });
+      res = await monthly().unwrap();
+    } else if (type === 'Referral') {
+      res = await referral().unwrap();
+    } else if (type === 'Savol javob') {
+      res = await answer().unwrap();
     }
+    if (res) setWinner(res);
   };
 
   return (
     <div className={s.container}>
       <ContentTop>
         <Segmented<string>
-          options={['Bugun', 'Oxirgi hafta', 'Oxirgi oy']}
+          options={[
+            'Bugun',
+            'Oxirgi hafta',
+            'Oxirgi oy',
+            'Referral',
+            'Savol javob',
+          ]}
           onChange={(value) => {
             setType(value);
             setWinner(undefined);
@@ -161,4 +166,4 @@ const DetermineWinnerPage = () => {
   );
 };
 
-export default DetermineWinnerPage;
+export default DetermineWinner;
