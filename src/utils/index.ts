@@ -72,4 +72,5 @@ export const names = {
   totalScanners: 'Umumiy skanerlar',
   todayScanners: 'Bugungi skanerlar',
   activeUsers: 'Faol foydalanuvchilar',
+  totalReferrals: 'Referal foydalanuvchilar',
 };

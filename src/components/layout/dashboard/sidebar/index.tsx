@@ -14,7 +14,7 @@ import {
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logout } from 'src/app/slices/authSlice';
-import { useAppDispatch } from 'src/app/store';
+import { useAppDispatch, useTypedSelector } from 'src/app/store';
 import { LogoutSvg } from 'src/components/icons';
 import images from 'src/constants/images';
 import { colors } from 'src/constants/theme';
@@ -22,6 +22,7 @@ import MenuItem from './components/MenuItem';
 import './sidebar.scss';
 
 function LayoutSidebar() {
+  const { role } = useTypedSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
@@ -74,6 +75,24 @@ function LayoutSidebar() {
     },
   ];
 
+  const managerList = [
+    {
+      label: 'Xabarlar',
+      link: '/messages',
+      icon: <Messages size="20" color={colors.white} />,
+    },
+    {
+      label: 'Savol javoblar',
+      link: '/questions',
+      icon: <MessageQuestion size="20" color={colors.white} />,
+    },
+    {
+      label: 'Instagram havolalari',
+      link: '/links',
+      icon: <Instagram size="20" color={colors.white} />,
+    },
+  ];
+
   return (
     <div className={`sidebar ${!open ? 'sidebar-mini' : ''}`}>
       <div className="sidebar-top">
@@ -88,7 +107,9 @@ function LayoutSidebar() {
           ></Button>
         </div>
         <div className="menu">
-          {list?.map((item) => <MenuItem key={item.link} {...item} />)}
+          {(role === 'admin' ? list : managerList)?.map((item) => (
+            <MenuItem key={item.link} {...item} />
+          ))}
         </div>
       </div>
       <div className="sidebar-footer">

@@ -32,6 +32,7 @@ export interface IUser extends IBaseRes<object> {
   combinedScore: number;
   childrenCount: number;
   referralsCount: number;
+  referralBonus: number;
   scanCount: number;
   answerCount: number;
 }

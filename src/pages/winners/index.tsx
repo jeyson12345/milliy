@@ -41,7 +41,8 @@ function Winners() {
   return (
     <TableContent
       title="G'oliblar"
-      total={allData?.pagination?.total}
+      tableHeightGap={180.8}
+      paginationVisible={false}
       dataSource={data}
       columns={columns}
       loading={isLoading}
@@ -66,22 +67,40 @@ export const columns: ColumnsType<IWinnersRes> = [
     render: (_, { userId }) =>
       `${userId?.firstName} ${userId?.secondName} ${userId?.surname}`,
   },
-  // {
-  //   title: 'Jami bali',
-  //   key: 'balans',
-  //   render: (_, { userId }) =>
-  //     userId?.referralsCount || 0 + userId?.scanCount || 0,
-  // },
+  {
+    title: 'Viloyat',
+    key: 'city',
+    render: (_, { userId }) => userId?.city,
+  },
+  {
+    title: 'Tuman',
+    key: 'region',
+    render: (_, { userId }) => userId?.city,
+  },
+  {
+    title: 'Jami bali',
+    key: 'combinedScore',
+    render: (_, { userId }) => userId?.combinedScore?.toLocaleString(),
+  },
+  {
+    title: 'Referal ballari',
+    key: 'referralBonus',
+    render: (_, { userId }) => userId?.referralBonus?.toLocaleString(),
+  },
   {
     title: 'Yutuq turi',
     key: 'type',
     align: 'center',
-    width: 120,
+    width: 140,
     render: (_, record) =>
       record?.winType == 'daily'
         ? 'Kunlik'
         : record?.winType == 'weekly'
         ? 'Haftalik'
+        : record?.winType == 'answer'
+        ? 'Savol javob'
+        : record?.winType == 'referral'
+        ? "Referal bo'yicha"
         : 'Oylik',
   },
   {

@@ -2,9 +2,9 @@ import { Flex, Spin, Statistic, StatisticProps, Table } from 'antd';
 import {
   Category2,
   Firstline,
+  Link,
   Profile2User,
   StatusUp,
-  UserOctagon,
 } from 'iconsax-react';
 import CountUp from 'react-countup';
 import { useGetStatsQuery } from 'src/app/services/users';
@@ -31,16 +31,18 @@ function Statistics() {
         {/* Top stats */}
         <div className="statistics-content">
           <Flex style={{ marginBottom: 24 }} gap={16}>
-            {Object.entries(data?.stats || {}).map(([key, value], index) => (
-              <Statistic
-                key={key}
-                title={names?.[key as keyof typeof names] || key}
-                value={value}
-                formatter={formatter}
-                suffix={<div className="stat-icon">{statIcons[index]}</div>}
-                className="stat"
-              />
-            ))}
+            {Object.entries(data?.stats || {}).map(([key, value], index) =>
+              key === 'activeUsers' ? undefined : (
+                <Statistic
+                  key={key}
+                  title={names?.[key as keyof typeof names] || key}
+                  value={value}
+                  formatter={formatter}
+                  suffix={<div className="stat-icon">{statIcons[index]}</div>}
+                  className="stat"
+                />
+              )
+            )}
           </Flex>
 
           <Flex justify="space-between" wrap="wrap" gap={24}>
@@ -101,7 +103,8 @@ const statIcons = [
   <StatusUp size="24" color={colors.white} />,
   <Category2 size="24" color={colors.white} />,
   <Firstline size="24" color={colors.white} />,
-  <UserOctagon size="28" color={colors.white} />,
+  <Link size="28" color={colors.white} />,
+  <Link size="24" color={colors.white} />,
 ];
 
 const regionsColumns = [

@@ -20,7 +20,7 @@ import {
 } from 'src/pages';
 
 function RoutElements() {
-  const { isAuthenticated } = useTypedSelector((state) => state.auth);
+  const { isAuthenticated, role } = useTypedSelector((state) => state.auth);
 
   if (!isAuthenticated) {
     return (
@@ -35,18 +35,28 @@ function RoutElements() {
 
   return (
     <Routes>
-      <Route path="/" element={<DashboardLayout />}>
-        <Route index element={<StatisticsPage />} />
-        <Route path="/determine_winner" element={<DetermineWinnerPage />} />
-        <Route path="/qr_codes" element={<QRCodesPage />} />
-        <Route path="/scans" element={<ScansPage />} />
-        <Route path="/users" element={<UsersPage />} />
-        <Route path="/winners" element={<WinnersPage />} />
-        <Route path="/messages" element={<MessagesPage />} />
-        <Route path="/questions" element={<QuestionsPage />} />
-        <Route path="/links" element={<LinksPage />} />
-        <Route path="*" element={<Custom404Page />} />
-      </Route>
+      {role === 'admin' ? (
+        <Route path="/" element={<DashboardLayout />}>
+          <Route index element={<StatisticsPage />} />
+          <Route path="/determine_winner" element={<DetermineWinnerPage />} />
+          <Route path="/qr_codes" element={<QRCodesPage />} />
+          <Route path="/scans" element={<ScansPage />} />
+          <Route path="/users" element={<UsersPage />} />
+          <Route path="/winners" element={<WinnersPage />} />
+          <Route path="/messages" element={<MessagesPage />} />
+          <Route path="/questions" element={<QuestionsPage />} />
+          <Route path="/links" element={<LinksPage />} />
+          <Route path="*" element={<Custom404Page />} />
+        </Route>
+      ) : (
+        <Route path="/" element={<DashboardLayout />}>
+          <Route index element={<MessagesPage />} />
+          <Route path="/messages" element={<MessagesPage />} />
+          <Route path="/questions" element={<QuestionsPage />} />
+          <Route path="/links" element={<LinksPage />} />
+          <Route path="*" element={<Custom404Page />} />
+        </Route>
+      )}
     </Routes>
   );
 }
